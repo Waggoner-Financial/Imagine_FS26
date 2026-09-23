@@ -1,0 +1,9 @@
+$schema: 'https://moonrepo.dev/schemas/project.json'
+
+# Synthetic portfolio data and the pure math that derives every dashboard
+# figure from it. Knows nothing about GraphQL, so the API, a frontend or a
+# Storybook can all consume it. Inherits build/dev from the tsdown tag and
+# test/typecheck from the shared bun-common tasks.
+language: 'typescript'
+layer: 'library'
+tags: ['tsdown']

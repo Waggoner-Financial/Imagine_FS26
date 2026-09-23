@@ -3,7 +3,7 @@
   "files": [],
   "references": [
     {
-      "path": "packages/template/tsconfig.json"
+      "path": "packages/mock-data/tsconfig.json"
     }
   ]
 }
