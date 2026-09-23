@@ -1,0 +1,58 @@
+$schema: 'https://moonrepo.dev/schemas/project.json'
+
+# GraphQL server for the Portfolio Dashboard, serving schema.graphql from the
+# sample data in @imagine/mock-data. Inherits test/typecheck from the shared
+# bun-common tasks. Nothing imports this app, so it is not listed in the root
+# project's dependsOn.
+language: 'typescript'
+layer: 'application'
+
+tasks:
+  # Bundles the server, the schema and all dependencies into one file for
+  # deployment. Named `build` so CI proves the deploy artifact still builds.
+  build:
+    command: 'bun build src/main.ts --target=bun --outfile=dist/server.js'
+    deps:
+      - '^:build'
+    inputs:
+      - 'src/**/*'
+      - 'schema.graphql'
+    outputs:
+      - 'dist'
+
+  # Regenerates src/generated from schema.graphql. Commit the output.
+  codegen:
+    command: 'graphql-codegen --config codegen.ts'
+    options:
+      cache: false
+      runInCI: 'always'
+
+  # Fails when schema.graphql changed but src/generated was not regenerated.
+  codegen-check:
+    command: 'graphql-codegen --config codegen.ts --check'
+    inputs:
+      - 'schema.graphql'
+      - 'codegen.ts'
+      - 'src/generated/**/*'
+    options:
+      runInCI: 'always'
+
+  # Graph-connected local servers stay CI-skipped. In CI-marked shells
+  # (agent harnesses): `moonx mock-api:dev --ignore-ci-checks`.
+  dev:
+    command: 'bun --watch src/main.ts'
+    deps:
+      - '^:build'
+    options:
+      cache: false
+      persistent: true
+      runInCI: 'skip'
+
+  start:
+    command: 'bun src/main.ts'
+    deps:
+      - '^:build'
+    options:
+      cache: false
+      persistent: true
+      runInCI: 'skip'

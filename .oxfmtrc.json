@@ -42,6 +42,7 @@
     ".next",
     ".source",
     ".vercel",
-    "*.patch"
+    "*.patch",
+    "src/generated"
   ]
 }

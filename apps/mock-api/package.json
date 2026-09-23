@@ -1,0 +1,17 @@
+{
+  "name": "@imagine/mock-api",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "dependencies": {
+    "@imagine/mock-data": "workspace:*",
+    "graphql": "catalog:",
+    "graphql-yoga": "catalog:"
+  },
+  "devDependencies": {
+    "@graphql-codegen/cli": "catalog:",
+    "@graphql-codegen/typescript": "catalog:",
+    "@graphql-codegen/typescript-resolvers": "catalog:",
+    "typescript": "catalog:"
+  }
+}

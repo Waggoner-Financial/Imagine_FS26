@@ -1,0 +1,357 @@
+"""
+Mock API for the Portfolio Dashboard. Every figure is synthetic.
+
+Conventions shared by every query:
+- Returns, weights, percentiles, volatilities, VaR and ES are fractions:
+  0.0251 means 2.51 %. Money is in dollars. Multiples are plain numbers
+  (12.3 means 12.3x). VaR and ES are negative.
+- Dates are strings in YYYY-MM-DD form. Every payload carries its own asOf.
+- A figure that cannot be computed is null, with a sibling reason field
+  explaining why. It is never a zero or an empty string.
+"""
+schema {
+  query: Query
+}
+
+type Query {
+  "The model portfolios the dashboard selector offers."
+  dashboardPortfolios: [DashboardPortfolio!]!
+
+  "Header figures for one portfolio."
+  portfolioDashboardSummary(portfolioId: ID!): DashboardSummary!
+
+  "Cumulative return lines for the portfolio, its benchmark and its index."
+  portfolioPriceSeries(
+    portfolioId: ID!
+    horizon: DashboardHorizon!
+  ): PriceSeriesPayload!
+
+  "The four price multiples and where they rank against two universes."
+  portfolioFourPrice(portfolioId: ID!): FourPricePayload!
+
+  "VaR, expected shortfall, volatility and correlations."
+  portfolioRisk(portfolioId: ID!): RiskPayload!
+
+  "Positions that moved most since the last trade, and what they explain."
+  portfolioMovers(portfolioId: ID!, count: Int = 3): MoversPayload!
+
+  "Return implied by price targets, plus stale and missing targets."
+  portfolioExpectedReturn(
+    portfolioId: ID!
+    count: Int = 3
+  ): ExpectedReturnPayload!
+
+  "Client money deployed in this model, and how it has performed."
+  deploymentSummary(portfolioId: ID!): DeploymentPayload!
+
+  "Where the weight sits by sector and by holding, with returns."
+  portfolioSectorWeights(
+    portfolioId: ID!
+    horizon: DashboardHorizon!
+  ): SectorWeightsPayload!
+}
+
+"""
+Horizons the dashboard can be viewed over. ALL starts at the portfolio's
+inception date; SINCE_TRADE starts at its last trade date.
+"""
+enum DashboardHorizon {
+  ONE_DAY
+  ONE_MONTH
+  ONE_YEAR
+  YTD
+  ALL
+  SINCE_TRADE
+}
+
+enum ModelPortfolioCode {
+  EQUITY
+  EARNINGS
+  DIVIDEND
+  FCF
+  REVENUE
+}
+
+"Which line of a Price Action chart a series represents."
+enum SeriesKind {
+  PORTFOLIO
+  BENCHMARK
+  INDEX
+}
+
+"Where an AUM figure came from."
+enum AumSource {
+  ACCOUNTING_SYSTEM
+  MANUAL
+}
+
+type DashboardPortfolio {
+  id: ID!
+  code: ModelPortfolioCode!
+  name: String!
+}
+
+# --- portfolioDashboardSummary ---------------------------------------------
+
+type DashboardSummary {
+  portfolio: DashboardPortfolio!
+  "Holdings excluding cash."
+  holdingsCount: Int!
+  "Null when no trade date has been set for the portfolio."
+  tradeDate: String
+  "Null when there is no trade date to measure from."
+  returnSinceTrade: ReturnSinceTrade
+  asOf: String!
+}
+
+type ReturnSinceTrade {
+  baselineDate: String!
+  latestDate: String!
+  returnPct: Float!
+  "False while the figure ignores client cash flows; the UI discloses this."
+  flowAdjusted: Boolean!
+}
+
+# --- portfolioPriceSeries --------------------------------------------------
+
+type PriceSeriesPayload {
+  horizon: DashboardHorizon!
+  "Every series in the payload is rebased to 0 at this date."
+  windowStart: String!
+  series: [PriceSeries!]!
+  asOf: String!
+}
+
+type PriceSeries {
+  id: ID!
+  label: String!
+  kind: SeriesKind!
+  "At most 260 points; the server downsamples long windows."
+  points: [SeriesPoint!]!
+  """
+  Set when points is empty. A series with no data at windowStart comes back
+  empty rather than rebased to its own later start date.
+  """
+  reason: String
+}
+
+type SeriesPoint {
+  "A real sampled date, never interpolated."
+  date: String!
+  "Cumulative return since windowStart."
+  value: Float!
+}
+
+# --- portfolioFourPrice ----------------------------------------------------
+
+type FourPricePayload {
+  "Aggregated with target weights."
+  byTargetWeight: FourPriceSet!
+  """
+  Aggregated with target weight x expected return, renormalised. Holdings
+  priced at or above their target are excluded.
+  """
+  byWeightedEr: FourPriceSet!
+  vsSp500: FourPriceRanking!
+  vsIndex: FourPriceRanking!
+  asOf: String!
+}
+
+type FourPriceSet {
+  rev: FourPriceValue!
+  fcf: FourPriceValue!
+  ern: FourPriceValue!
+  div: FourPriceValue!
+}
+
+type FourPriceValue {
+  """
+  Null only when coverage is below 25 % of weight. Between 25 % and 50 % the
+  multiple is present and the UI shows it greyed out.
+  """
+  multiple: Float
+  "Share of portfolio weight the multiple could be computed over."
+  coverageWeight: Float!
+  coveredHoldings: Int!
+  totalHoldings: Int!
+  reason: String
+}
+
+type FourPriceRanking {
+  universe: String!
+  constituents: Int!
+  rev: RankStat!
+  fcf: RankStat!
+  ern: RankStat!
+  div: RankStat!
+}
+
+type RankStat {
+  percentile: Float
+  zScore: Float
+  universeMean: Float
+  universeStdDev: Float
+  reason: String
+}
+
+# --- portfolioRisk ---------------------------------------------------------
+
+type RiskPayload {
+  "Days of history actually used."
+  windowDays: Int!
+  requestedWindowDays: Int!
+  "Explains a window shorter than requested."
+  windowNote: String
+  "One-day figures, as negative fractions."
+  var95: Float!
+  var99: Float!
+  es95: Float!
+  es99: Float!
+  "The one-day figures scaled by the square root of 10."
+  var95TenDay: Float!
+  var99TenDay: Float!
+  es95TenDay: Float!
+  es99TenDay: Float!
+  garchVolDaily: Float
+  garchVolAnnualized: Float
+  "Explains a null GARCH estimate, e.g. the model did not converge."
+  garchReason: String
+  weightedVolAnnualized: Float
+  weightedVolCoverage: Float!
+  topCorrelations: [CorrelationPair!]!
+  bottomCorrelations: [CorrelationPair!]!
+  asOf: String!
+}
+
+type CorrelationPair {
+  a: String!
+  b: String!
+  rho: Float!
+}
+
+# --- portfolioMovers -------------------------------------------------------
+
+type MoversPayload {
+  tradeDate: String
+  baselineDate: String
+  top: [Mover!]!
+  bottom: [Mover!]!
+  "Null when there is no trade date to attribute against."
+  attribution: Attribution
+  "Set when the panel as a whole cannot be computed."
+  reason: String
+  asOf: String!
+}
+
+type Mover {
+  ticker: String!
+  name: String!
+  returnSinceTrade: Float!
+  targetWeight: Float!
+  currentWeight: Float!
+  "Drift in percentage points, not a fraction."
+  driftPp: Float!
+  "targetWeight x returnSinceTrade. These sum to the header return."
+  contribution: Float!
+}
+
+type Attribution {
+  portfolioReturn: Float!
+  "Null when the portfolio return is too close to zero for a share to mean anything."
+  topShare: Float
+  bottomShare: Float
+  reason: String
+}
+
+# --- portfolioExpectedReturn -----------------------------------------------
+
+type ExpectedReturnPayload {
+  portfolioEr: Float!
+  "Weight the ER covers, excluding cash and holdings with no price target."
+  coveredWeight: Float!
+  topContributors: [ErContributor!]!
+  bottomContributors: [ErContributor!]!
+  "Tickers carrying no price target."
+  noTarget: [String!]!
+  stalePriceTargets: StalePriceTargets!
+  asOf: String!
+}
+
+type ErContributor {
+  ticker: String!
+  targetWeight: Float!
+  price: Float!
+  priceTarget: Float!
+  "Raw upside: (priceTarget - price) / price."
+  er: Float!
+  contribution: Float!
+}
+
+type StalePriceTargets {
+  count: Int!
+  tickers: [StaleTarget!]!
+}
+
+"A price target set before the company's most recent earnings report."
+type StaleTarget {
+  ticker: String!
+  priceTargetDate: String!
+  lastEarningsDate: String!
+}
+
+# --- deploymentSummary -----------------------------------------------------
+
+type DeploymentPayload {
+  accountsCount: Int!
+  clientsCount: Int!
+  aum: Aum!
+  gainLoss: [GainLoss!]!
+  asOf: String!
+}
+
+type Aum {
+  "Dollars."
+  value: Float
+  asOf: String!
+  source: AumSource!
+  reason: String
+}
+
+type GainLoss {
+  horizon: DashboardHorizon!
+  "Dollars."
+  value: Float
+  pct: Float
+  reason: String
+}
+
+# --- portfolioSectorWeights ------------------------------------------------
+
+type SectorWeightsPayload {
+  horizon: DashboardHorizon!
+  "S&P 500 return over the same horizon."
+  benchmarkReturn: Float!
+  sectors: [SectorSlice!]!
+  holdings: [HoldingSlice!]!
+  asOf: String!
+}
+
+type SectorSlice {
+  name: String!
+  weight: Float!
+  "Null for cash."
+  return: Float
+  vsBenchmark: Float
+  isCash: Boolean!
+  holdings: [String!]!
+}
+
+type HoldingSlice {
+  ticker: String!
+  name: String!
+  sector: String!
+  weight: Float!
+  "Null for cash."
+  return: Float
+  isCash: Boolean!
+}

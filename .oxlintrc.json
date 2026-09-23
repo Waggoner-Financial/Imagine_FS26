@@ -102,6 +102,7 @@
     "{packages,apps}/*/.source/**",
     "{packages,apps}/*/.vinxi/**",
     "{packages,apps}/*/.output/**",
-    "{packages,apps}/*/.vercel/**"
+    "{packages,apps}/*/.vercel/**",
+    "{packages,apps}/*/src/generated/**"
   ]
 }
