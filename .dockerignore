@@ -1,0 +1,8 @@
+# Keep the Docker build context to source files only.
+**/node_modules
+**/dist
+**/*.tsbuildinfo
+.git
+.moon/cache
+.moon/hooks
+.agents/ignore
