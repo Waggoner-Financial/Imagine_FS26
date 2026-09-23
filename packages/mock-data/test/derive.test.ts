@@ -99,6 +99,28 @@ describe('EQUITY reconciliation table', () => {
   });
 });
 
+describe('mover counts at the boundary', () => {
+  test('returns no top movers for a count of zero', () => {
+    expect(topContributions(EQUITY.holdings, 0)).toEqual([]);
+  });
+
+  test('returns no bottom movers for a count of zero', () => {
+    expect(bottomContributions(EQUITY.holdings, 0)).toEqual([]);
+  });
+
+  test('returns no movers for a negative count', () => {
+    expect(topContributions(EQUITY.holdings, -2)).toEqual([]);
+    expect(bottomContributions(EQUITY.holdings, -2)).toEqual([]);
+  });
+
+  test('never includes cash as a mover', () => {
+    const tickers = topContributions(EQUITY.holdings, 13).map(
+      (entry) => entry.holding.ticker
+    );
+    expect(tickers).not.toContain('CASH');
+  });
+});
+
 describe('EQUITY derived coverage', () => {
   test('derives pDIV target-weight coverage of 0.58 from the payer list', () => {
     expect(coverageByWeight(EQUITY.holdings, paysDividend)).toBeCloseTo(

@@ -93,13 +93,19 @@ export const rankedContributions = (holdings: Holding[]): Contribution[] =>
 export const topContributions = (
   holdings: Holding[],
   count: number
-): Contribution[] => rankedContributions(holdings).slice(0, count);
+): Contribution[] =>
+  count <= 0 ? [] : rankedContributions(holdings).slice(0, count);
 
-/** Ascending — most negative first, matching the spec's bottom-movers order. */
+/**
+ * Ascending — most negative first, matching the spec's bottom-movers order.
+ * The count guard matters: `slice(-0)` is `slice(0)`, which would return every
+ * holding instead of none.
+ */
 export const bottomContributions = (
   holdings: Holding[],
   count: number
-): Contribution[] => rankedContributions(holdings).slice(-count).reverse();
+): Contribution[] =>
+  count <= 0 ? [] : rankedContributions(holdings).slice(-count).reverse();
 
 export const attributionShares = (
   holdings: Holding[],
