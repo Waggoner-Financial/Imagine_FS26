@@ -43,6 +43,6 @@
     ".source",
     ".vercel",
     "*.patch",
-    "src/generated"
+    "**/src/generated"
   ]
 }

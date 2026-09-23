@@ -1,16 +1,14 @@
 import type { GraphQLResolveInfo } from 'graphql';
 export type Maybe<T> = T | null;
 export type InputMaybe<T> = Maybe<T>;
-export type RequireFields<T, K extends keyof T> = Omit<T, K> & {
-  [P in K]-?: NonNullable<T[P]>;
-};
+export type RequireFields<T, K extends keyof T> = Omit<T, K> & { [P in K]-?: NonNullable<T[P]> };
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
-  ID: { input: string; output: string };
-  String: { input: string; output: string };
-  Boolean: { input: boolean; output: boolean };
-  Int: { input: number; output: number };
-  Float: { input: number; output: number };
+  ID: { input: string; output: string; }
+  String: { input: string; output: string; }
+  Boolean: { input: boolean; output: boolean; }
+  Int: { input: number; output: number; }
+  Float: { input: number; output: number; }
 };
 
 export type Attribution = {
@@ -32,7 +30,9 @@ export type Aum = {
 };
 
 /** Where an AUM figure came from. */
-export type AumSource = 'ACCOUNTING_SYSTEM' | 'MANUAL';
+export type AumSource =
+  | 'ACCOUNTING_SYSTEM'
+  | 'MANUAL';
 
 export type CorrelationPair = {
   __typename?: 'CorrelationPair';
@@ -249,36 +249,44 @@ export type Query = {
   portfolioSectorWeights: SectorWeightsPayload;
 };
 
+
 export type QueryDeploymentSummaryArgs = {
   portfolioId: Scalars['ID']['input'];
 };
 
+
 export type QueryPortfolioDashboardSummaryArgs = {
   portfolioId: Scalars['ID']['input'];
 };
+
 
 export type QueryPortfolioExpectedReturnArgs = {
   count?: InputMaybe<Scalars['Int']['input']>;
   portfolioId: Scalars['ID']['input'];
 };
 
+
 export type QueryPortfolioFourPriceArgs = {
   portfolioId: Scalars['ID']['input'];
 };
+
 
 export type QueryPortfolioMoversArgs = {
   count?: InputMaybe<Scalars['Int']['input']>;
   portfolioId: Scalars['ID']['input'];
 };
 
+
 export type QueryPortfolioPriceSeriesArgs = {
   horizon: DashboardHorizon;
   portfolioId: Scalars['ID']['input'];
 };
 
+
 export type QueryPortfolioRiskArgs = {
   portfolioId: Scalars['ID']['input'];
 };
+
 
 export type QueryPortfolioSectorWeightsArgs = {
   horizon: DashboardHorizon;
@@ -353,7 +361,10 @@ export type SectorWeightsPayload = {
 };
 
 /** Which line of a Price Action chart a series represents. */
-export type SeriesKind = 'BENCHMARK' | 'INDEX' | 'PORTFOLIO';
+export type SeriesKind =
+  | 'BENCHMARK'
+  | 'INDEX'
+  | 'PORTFOLIO';
 
 export type SeriesPoint = {
   __typename?: 'SeriesPoint';
@@ -377,19 +388,15 @@ export type StaleTarget = {
   ticker: Scalars['String']['output'];
 };
 
+
+
 export type ResolverTypeWrapper<T> = Promise<T> | T;
+
 
 export type ResolverWithResolve<TResult, TParent, TContext, TArgs> = {
   resolve: ResolverFn<TResult, TParent, TContext, TArgs>;
 };
-export type Resolver<
-  TResult,
-  TParent = Record<PropertyKey, never>,
-  TContext = Record<PropertyKey, never>,
-  TArgs = Record<PropertyKey, never>,
-> =
-  | ResolverFn<TResult, TParent, TContext, TArgs>
-  | ResolverWithResolve<TResult, TParent, TContext, TArgs>;
+export type Resolver<TResult, TParent = Record<PropertyKey, never>, TContext = Record<PropertyKey, never>, TArgs = Record<PropertyKey, never>> = ResolverFn<TResult, TParent, TContext, TArgs> | ResolverWithResolve<TResult, TParent, TContext, TArgs>;
 
 export type ResolverFn<TResult, TParent, TContext, TArgs> = (
   parent: TParent,
@@ -412,25 +419,9 @@ export type SubscriptionResolveFn<TResult, TParent, TContext, TArgs> = (
   info: GraphQLResolveInfo
 ) => TResult | Promise<TResult>;
 
-export interface SubscriptionSubscriberObject<
-  TResult,
-  TKey extends string,
-  TParent,
-  TContext,
-  TArgs,
-> {
-  subscribe: SubscriptionSubscribeFn<
-    { [key in TKey]: TResult },
-    TParent,
-    TContext,
-    TArgs
-  >;
-  resolve?: SubscriptionResolveFn<
-    TResult,
-    { [key in TKey]: TResult },
-    TContext,
-    TArgs
-  >;
+export interface SubscriptionSubscriberObject<TResult, TKey extends string, TParent, TContext, TArgs> {
+  subscribe: SubscriptionSubscribeFn<{ [key in TKey]: TResult }, TParent, TContext, TArgs>;
+  resolve?: SubscriptionResolveFn<TResult, { [key in TKey]: TResult }, TContext, TArgs>;
 }
 
 export interface SubscriptionResolverObject<TResult, TParent, TContext, TArgs> {
@@ -438,61 +429,35 @@ export interface SubscriptionResolverObject<TResult, TParent, TContext, TArgs> {
   resolve: SubscriptionResolveFn<TResult, any, TContext, TArgs>;
 }
 
-export type SubscriptionObject<
-  TResult,
-  TKey extends string,
-  TParent,
-  TContext,
-  TArgs,
-> =
+export type SubscriptionObject<TResult, TKey extends string, TParent, TContext, TArgs> =
   | SubscriptionSubscriberObject<TResult, TKey, TParent, TContext, TArgs>
   | SubscriptionResolverObject<TResult, TParent, TContext, TArgs>;
 
-export type SubscriptionResolver<
-  TResult,
-  TKey extends string,
-  TParent = Record<PropertyKey, never>,
-  TContext = Record<PropertyKey, never>,
-  TArgs = Record<PropertyKey, never>,
-> =
-  | ((
-      ...args: any[]
-    ) => SubscriptionObject<TResult, TKey, TParent, TContext, TArgs>)
+export type SubscriptionResolver<TResult, TKey extends string, TParent = Record<PropertyKey, never>, TContext = Record<PropertyKey, never>, TArgs = Record<PropertyKey, never>> =
+  | ((...args: any[]) => SubscriptionObject<TResult, TKey, TParent, TContext, TArgs>)
   | SubscriptionObject<TResult, TKey, TParent, TContext, TArgs>;
 
-export type TypeResolveFn<
-  TTypes,
-  TParent = Record<PropertyKey, never>,
-  TContext = Record<PropertyKey, never>,
-> = (
+export type TypeResolveFn<TTypes, TParent = Record<PropertyKey, never>, TContext = Record<PropertyKey, never>> = (
   parent: TParent,
   context: TContext,
   info: GraphQLResolveInfo
 ) => Maybe<TTypes> | Promise<Maybe<TTypes>>;
 
-export type IsTypeOfResolverFn<
-  T = Record<PropertyKey, never>,
-  TContext = Record<PropertyKey, never>,
-> = (
-  obj: T,
-  context: TContext,
-  info: GraphQLResolveInfo
-) => boolean | Promise<boolean>;
+export type IsTypeOfResolverFn<T = Record<PropertyKey, never>, TContext = Record<PropertyKey, never>> = (obj: T, context: TContext, info: GraphQLResolveInfo) => boolean | Promise<boolean>;
 
 export type NextResolverFn<T> = () => Promise<T>;
 
-export type DirectiveResolverFn<
-  TResult = Record<PropertyKey, never>,
-  TParent = Record<PropertyKey, never>,
-  TContext = Record<PropertyKey, never>,
-  TArgs = Record<PropertyKey, never>,
-> = (
+export type DirectiveResolverFn<TResult = Record<PropertyKey, never>, TParent = Record<PropertyKey, never>, TContext = Record<PropertyKey, never>, TArgs = Record<PropertyKey, never>> = (
   next: NextResolverFn<TResult>,
   parent: TParent,
   args: TArgs,
   context: TContext,
   info: GraphQLResolveInfo
 ) => TResult | Promise<TResult>;
+
+
+
+
 
 /** Mapping between all available schema types and the resolvers types */
 export type ResolversTypes = {
@@ -570,100 +535,49 @@ export type ResolversParentTypes = {
   String: Scalars['String']['output'];
 };
 
-export type AttributionResolvers<
-  ContextType = any,
-  ParentType extends ResolversParentTypes['Attribution'] =
-    ResolversParentTypes['Attribution'],
-> = {
-  bottomShare?: Resolver<
-    Maybe<ResolversTypes['Float']>,
-    ParentType,
-    ContextType
-  >;
+export type AttributionResolvers<ContextType = any, ParentType extends ResolversParentTypes['Attribution'] = ResolversParentTypes['Attribution']> = {
+  bottomShare?: Resolver<Maybe<ResolversTypes['Float']>, ParentType, ContextType>;
   portfolioReturn?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
   reason?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   topShare?: Resolver<Maybe<ResolversTypes['Float']>, ParentType, ContextType>;
 };
 
-export type AumResolvers<
-  ContextType = any,
-  ParentType extends ResolversParentTypes['Aum'] = ResolversParentTypes['Aum'],
-> = {
+export type AumResolvers<ContextType = any, ParentType extends ResolversParentTypes['Aum'] = ResolversParentTypes['Aum']> = {
   asOf?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   reason?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   source?: Resolver<ResolversTypes['AumSource'], ParentType, ContextType>;
   value?: Resolver<Maybe<ResolversTypes['Float']>, ParentType, ContextType>;
 };
 
-export type CorrelationPairResolvers<
-  ContextType = any,
-  ParentType extends ResolversParentTypes['CorrelationPair'] =
-    ResolversParentTypes['CorrelationPair'],
-> = {
+export type CorrelationPairResolvers<ContextType = any, ParentType extends ResolversParentTypes['CorrelationPair'] = ResolversParentTypes['CorrelationPair']> = {
   a?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   b?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   rho?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
 };
 
-export type DashboardPortfolioResolvers<
-  ContextType = any,
-  ParentType extends ResolversParentTypes['DashboardPortfolio'] =
-    ResolversParentTypes['DashboardPortfolio'],
-> = {
-  code?: Resolver<
-    ResolversTypes['ModelPortfolioCode'],
-    ParentType,
-    ContextType
-  >;
+export type DashboardPortfolioResolvers<ContextType = any, ParentType extends ResolversParentTypes['DashboardPortfolio'] = ResolversParentTypes['DashboardPortfolio']> = {
+  code?: Resolver<ResolversTypes['ModelPortfolioCode'], ParentType, ContextType>;
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
 };
 
-export type DashboardSummaryResolvers<
-  ContextType = any,
-  ParentType extends ResolversParentTypes['DashboardSummary'] =
-    ResolversParentTypes['DashboardSummary'],
-> = {
+export type DashboardSummaryResolvers<ContextType = any, ParentType extends ResolversParentTypes['DashboardSummary'] = ResolversParentTypes['DashboardSummary']> = {
   asOf?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   holdingsCount?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-  portfolio?: Resolver<
-    ResolversTypes['DashboardPortfolio'],
-    ParentType,
-    ContextType
-  >;
-  returnSinceTrade?: Resolver<
-    Maybe<ResolversTypes['ReturnSinceTrade']>,
-    ParentType,
-    ContextType
-  >;
-  tradeDate?: Resolver<
-    Maybe<ResolversTypes['String']>,
-    ParentType,
-    ContextType
-  >;
+  portfolio?: Resolver<ResolversTypes['DashboardPortfolio'], ParentType, ContextType>;
+  returnSinceTrade?: Resolver<Maybe<ResolversTypes['ReturnSinceTrade']>, ParentType, ContextType>;
+  tradeDate?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
 };
 
-export type DeploymentPayloadResolvers<
-  ContextType = any,
-  ParentType extends ResolversParentTypes['DeploymentPayload'] =
-    ResolversParentTypes['DeploymentPayload'],
-> = {
+export type DeploymentPayloadResolvers<ContextType = any, ParentType extends ResolversParentTypes['DeploymentPayload'] = ResolversParentTypes['DeploymentPayload']> = {
   accountsCount?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   asOf?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   aum?: Resolver<ResolversTypes['Aum'], ParentType, ContextType>;
   clientsCount?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-  gainLoss?: Resolver<
-    Array<ResolversTypes['GainLoss']>,
-    ParentType,
-    ContextType
-  >;
+  gainLoss?: Resolver<Array<ResolversTypes['GainLoss']>, ParentType, ContextType>;
 };
 
-export type ErContributorResolvers<
-  ContextType = any,
-  ParentType extends ResolversParentTypes['ErContributor'] =
-    ResolversParentTypes['ErContributor'],
-> = {
+export type ErContributorResolvers<ContextType = any, ParentType extends ResolversParentTypes['ErContributor'] = ResolversParentTypes['ErContributor']> = {
   contribution?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
   er?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
   price?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
@@ -672,65 +586,25 @@ export type ErContributorResolvers<
   ticker?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
 };
 
-export type ExpectedReturnPayloadResolvers<
-  ContextType = any,
-  ParentType extends ResolversParentTypes['ExpectedReturnPayload'] =
-    ResolversParentTypes['ExpectedReturnPayload'],
-> = {
+export type ExpectedReturnPayloadResolvers<ContextType = any, ParentType extends ResolversParentTypes['ExpectedReturnPayload'] = ResolversParentTypes['ExpectedReturnPayload']> = {
   asOf?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  bottomContributors?: Resolver<
-    Array<ResolversTypes['ErContributor']>,
-    ParentType,
-    ContextType
-  >;
+  bottomContributors?: Resolver<Array<ResolversTypes['ErContributor']>, ParentType, ContextType>;
   coveredWeight?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
   noTarget?: Resolver<Array<ResolversTypes['String']>, ParentType, ContextType>;
   portfolioEr?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
-  stalePriceTargets?: Resolver<
-    ResolversTypes['StalePriceTargets'],
-    ParentType,
-    ContextType
-  >;
-  topContributors?: Resolver<
-    Array<ResolversTypes['ErContributor']>,
-    ParentType,
-    ContextType
-  >;
+  stalePriceTargets?: Resolver<ResolversTypes['StalePriceTargets'], ParentType, ContextType>;
+  topContributors?: Resolver<Array<ResolversTypes['ErContributor']>, ParentType, ContextType>;
 };
 
-export type FourPricePayloadResolvers<
-  ContextType = any,
-  ParentType extends ResolversParentTypes['FourPricePayload'] =
-    ResolversParentTypes['FourPricePayload'],
-> = {
+export type FourPricePayloadResolvers<ContextType = any, ParentType extends ResolversParentTypes['FourPricePayload'] = ResolversParentTypes['FourPricePayload']> = {
   asOf?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  byTargetWeight?: Resolver<
-    ResolversTypes['FourPriceSet'],
-    ParentType,
-    ContextType
-  >;
-  byWeightedEr?: Resolver<
-    ResolversTypes['FourPriceSet'],
-    ParentType,
-    ContextType
-  >;
-  vsIndex?: Resolver<
-    ResolversTypes['FourPriceRanking'],
-    ParentType,
-    ContextType
-  >;
-  vsSp500?: Resolver<
-    ResolversTypes['FourPriceRanking'],
-    ParentType,
-    ContextType
-  >;
+  byTargetWeight?: Resolver<ResolversTypes['FourPriceSet'], ParentType, ContextType>;
+  byWeightedEr?: Resolver<ResolversTypes['FourPriceSet'], ParentType, ContextType>;
+  vsIndex?: Resolver<ResolversTypes['FourPriceRanking'], ParentType, ContextType>;
+  vsSp500?: Resolver<ResolversTypes['FourPriceRanking'], ParentType, ContextType>;
 };
 
-export type FourPriceRankingResolvers<
-  ContextType = any,
-  ParentType extends ResolversParentTypes['FourPriceRanking'] =
-    ResolversParentTypes['FourPriceRanking'],
-> = {
+export type FourPriceRankingResolvers<ContextType = any, ParentType extends ResolversParentTypes['FourPriceRanking'] = ResolversParentTypes['FourPriceRanking']> = {
   constituents?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   div?: Resolver<ResolversTypes['RankStat'], ParentType, ContextType>;
   ern?: Resolver<ResolversTypes['RankStat'], ParentType, ContextType>;
@@ -739,22 +613,14 @@ export type FourPriceRankingResolvers<
   universe?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
 };
 
-export type FourPriceSetResolvers<
-  ContextType = any,
-  ParentType extends ResolversParentTypes['FourPriceSet'] =
-    ResolversParentTypes['FourPriceSet'],
-> = {
+export type FourPriceSetResolvers<ContextType = any, ParentType extends ResolversParentTypes['FourPriceSet'] = ResolversParentTypes['FourPriceSet']> = {
   div?: Resolver<ResolversTypes['FourPriceValue'], ParentType, ContextType>;
   ern?: Resolver<ResolversTypes['FourPriceValue'], ParentType, ContextType>;
   fcf?: Resolver<ResolversTypes['FourPriceValue'], ParentType, ContextType>;
   rev?: Resolver<ResolversTypes['FourPriceValue'], ParentType, ContextType>;
 };
 
-export type FourPriceValueResolvers<
-  ContextType = any,
-  ParentType extends ResolversParentTypes['FourPriceValue'] =
-    ResolversParentTypes['FourPriceValue'],
-> = {
+export type FourPriceValueResolvers<ContextType = any, ParentType extends ResolversParentTypes['FourPriceValue'] = ResolversParentTypes['FourPriceValue']> = {
   coverageWeight?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
   coveredHoldings?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   multiple?: Resolver<Maybe<ResolversTypes['Float']>, ParentType, ContextType>;
@@ -762,26 +628,14 @@ export type FourPriceValueResolvers<
   totalHoldings?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
 };
 
-export type GainLossResolvers<
-  ContextType = any,
-  ParentType extends ResolversParentTypes['GainLoss'] =
-    ResolversParentTypes['GainLoss'],
-> = {
-  horizon?: Resolver<
-    ResolversTypes['DashboardHorizon'],
-    ParentType,
-    ContextType
-  >;
+export type GainLossResolvers<ContextType = any, ParentType extends ResolversParentTypes['GainLoss'] = ResolversParentTypes['GainLoss']> = {
+  horizon?: Resolver<ResolversTypes['DashboardHorizon'], ParentType, ContextType>;
   pct?: Resolver<Maybe<ResolversTypes['Float']>, ParentType, ContextType>;
   reason?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   value?: Resolver<Maybe<ResolversTypes['Float']>, ParentType, ContextType>;
 };
 
-export type HoldingSliceResolvers<
-  ContextType = any,
-  ParentType extends ResolversParentTypes['HoldingSlice'] =
-    ResolversParentTypes['HoldingSlice'],
-> = {
+export type HoldingSliceResolvers<ContextType = any, ParentType extends ResolversParentTypes['HoldingSlice'] = ResolversParentTypes['HoldingSlice']> = {
   isCash?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   return?: Resolver<Maybe<ResolversTypes['Float']>, ParentType, ContextType>;
@@ -790,11 +644,7 @@ export type HoldingSliceResolvers<
   weight?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
 };
 
-export type MoverResolvers<
-  ContextType = any,
-  ParentType extends ResolversParentTypes['Mover'] =
-    ResolversParentTypes['Mover'],
-> = {
+export type MoverResolvers<ContextType = any, ParentType extends ResolversParentTypes['Mover'] = ResolversParentTypes['Mover']> = {
   contribution?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
   currentWeight?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
   driftPp?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
@@ -804,297 +654,109 @@ export type MoverResolvers<
   ticker?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
 };
 
-export type MoversPayloadResolvers<
-  ContextType = any,
-  ParentType extends ResolversParentTypes['MoversPayload'] =
-    ResolversParentTypes['MoversPayload'],
-> = {
+export type MoversPayloadResolvers<ContextType = any, ParentType extends ResolversParentTypes['MoversPayload'] = ResolversParentTypes['MoversPayload']> = {
   asOf?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  attribution?: Resolver<
-    Maybe<ResolversTypes['Attribution']>,
-    ParentType,
-    ContextType
-  >;
-  baselineDate?: Resolver<
-    Maybe<ResolversTypes['String']>,
-    ParentType,
-    ContextType
-  >;
+  attribution?: Resolver<Maybe<ResolversTypes['Attribution']>, ParentType, ContextType>;
+  baselineDate?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   bottom?: Resolver<Array<ResolversTypes['Mover']>, ParentType, ContextType>;
   reason?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   top?: Resolver<Array<ResolversTypes['Mover']>, ParentType, ContextType>;
-  tradeDate?: Resolver<
-    Maybe<ResolversTypes['String']>,
-    ParentType,
-    ContextType
-  >;
+  tradeDate?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
 };
 
-export type PriceSeriesResolvers<
-  ContextType = any,
-  ParentType extends ResolversParentTypes['PriceSeries'] =
-    ResolversParentTypes['PriceSeries'],
-> = {
+export type PriceSeriesResolvers<ContextType = any, ParentType extends ResolversParentTypes['PriceSeries'] = ResolversParentTypes['PriceSeries']> = {
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   kind?: Resolver<ResolversTypes['SeriesKind'], ParentType, ContextType>;
   label?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  points?: Resolver<
-    Array<ResolversTypes['SeriesPoint']>,
-    ParentType,
-    ContextType
-  >;
+  points?: Resolver<Array<ResolversTypes['SeriesPoint']>, ParentType, ContextType>;
   reason?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
 };
 
-export type PriceSeriesPayloadResolvers<
-  ContextType = any,
-  ParentType extends ResolversParentTypes['PriceSeriesPayload'] =
-    ResolversParentTypes['PriceSeriesPayload'],
-> = {
+export type PriceSeriesPayloadResolvers<ContextType = any, ParentType extends ResolversParentTypes['PriceSeriesPayload'] = ResolversParentTypes['PriceSeriesPayload']> = {
   asOf?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  horizon?: Resolver<
-    ResolversTypes['DashboardHorizon'],
-    ParentType,
-    ContextType
-  >;
-  series?: Resolver<
-    Array<ResolversTypes['PriceSeries']>,
-    ParentType,
-    ContextType
-  >;
+  horizon?: Resolver<ResolversTypes['DashboardHorizon'], ParentType, ContextType>;
+  series?: Resolver<Array<ResolversTypes['PriceSeries']>, ParentType, ContextType>;
   windowStart?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
 };
 
-export type QueryResolvers<
-  ContextType = any,
-  ParentType extends ResolversParentTypes['Query'] =
-    ResolversParentTypes['Query'],
-> = {
-  dashboardPortfolios?: Resolver<
-    Array<ResolversTypes['DashboardPortfolio']>,
-    ParentType,
-    ContextType
-  >;
-  deploymentSummary?: Resolver<
-    ResolversTypes['DeploymentPayload'],
-    ParentType,
-    ContextType,
-    RequireFields<QueryDeploymentSummaryArgs, 'portfolioId'>
-  >;
-  portfolioDashboardSummary?: Resolver<
-    ResolversTypes['DashboardSummary'],
-    ParentType,
-    ContextType,
-    RequireFields<QueryPortfolioDashboardSummaryArgs, 'portfolioId'>
-  >;
-  portfolioExpectedReturn?: Resolver<
-    ResolversTypes['ExpectedReturnPayload'],
-    ParentType,
-    ContextType,
-    RequireFields<QueryPortfolioExpectedReturnArgs, 'count' | 'portfolioId'>
-  >;
-  portfolioFourPrice?: Resolver<
-    ResolversTypes['FourPricePayload'],
-    ParentType,
-    ContextType,
-    RequireFields<QueryPortfolioFourPriceArgs, 'portfolioId'>
-  >;
-  portfolioMovers?: Resolver<
-    ResolversTypes['MoversPayload'],
-    ParentType,
-    ContextType,
-    RequireFields<QueryPortfolioMoversArgs, 'count' | 'portfolioId'>
-  >;
-  portfolioPriceSeries?: Resolver<
-    ResolversTypes['PriceSeriesPayload'],
-    ParentType,
-    ContextType,
-    RequireFields<QueryPortfolioPriceSeriesArgs, 'horizon' | 'portfolioId'>
-  >;
-  portfolioRisk?: Resolver<
-    ResolversTypes['RiskPayload'],
-    ParentType,
-    ContextType,
-    RequireFields<QueryPortfolioRiskArgs, 'portfolioId'>
-  >;
-  portfolioSectorWeights?: Resolver<
-    ResolversTypes['SectorWeightsPayload'],
-    ParentType,
-    ContextType,
-    RequireFields<QueryPortfolioSectorWeightsArgs, 'horizon' | 'portfolioId'>
-  >;
+export type QueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
+  dashboardPortfolios?: Resolver<Array<ResolversTypes['DashboardPortfolio']>, ParentType, ContextType>;
+  deploymentSummary?: Resolver<ResolversTypes['DeploymentPayload'], ParentType, ContextType, RequireFields<QueryDeploymentSummaryArgs, 'portfolioId'>>;
+  portfolioDashboardSummary?: Resolver<ResolversTypes['DashboardSummary'], ParentType, ContextType, RequireFields<QueryPortfolioDashboardSummaryArgs, 'portfolioId'>>;
+  portfolioExpectedReturn?: Resolver<ResolversTypes['ExpectedReturnPayload'], ParentType, ContextType, RequireFields<QueryPortfolioExpectedReturnArgs, 'count' | 'portfolioId'>>;
+  portfolioFourPrice?: Resolver<ResolversTypes['FourPricePayload'], ParentType, ContextType, RequireFields<QueryPortfolioFourPriceArgs, 'portfolioId'>>;
+  portfolioMovers?: Resolver<ResolversTypes['MoversPayload'], ParentType, ContextType, RequireFields<QueryPortfolioMoversArgs, 'count' | 'portfolioId'>>;
+  portfolioPriceSeries?: Resolver<ResolversTypes['PriceSeriesPayload'], ParentType, ContextType, RequireFields<QueryPortfolioPriceSeriesArgs, 'horizon' | 'portfolioId'>>;
+  portfolioRisk?: Resolver<ResolversTypes['RiskPayload'], ParentType, ContextType, RequireFields<QueryPortfolioRiskArgs, 'portfolioId'>>;
+  portfolioSectorWeights?: Resolver<ResolversTypes['SectorWeightsPayload'], ParentType, ContextType, RequireFields<QueryPortfolioSectorWeightsArgs, 'horizon' | 'portfolioId'>>;
 };
 
-export type RankStatResolvers<
-  ContextType = any,
-  ParentType extends ResolversParentTypes['RankStat'] =
-    ResolversParentTypes['RankStat'],
-> = {
-  percentile?: Resolver<
-    Maybe<ResolversTypes['Float']>,
-    ParentType,
-    ContextType
-  >;
+export type RankStatResolvers<ContextType = any, ParentType extends ResolversParentTypes['RankStat'] = ResolversParentTypes['RankStat']> = {
+  percentile?: Resolver<Maybe<ResolversTypes['Float']>, ParentType, ContextType>;
   reason?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  universeMean?: Resolver<
-    Maybe<ResolversTypes['Float']>,
-    ParentType,
-    ContextType
-  >;
-  universeStdDev?: Resolver<
-    Maybe<ResolversTypes['Float']>,
-    ParentType,
-    ContextType
-  >;
+  universeMean?: Resolver<Maybe<ResolversTypes['Float']>, ParentType, ContextType>;
+  universeStdDev?: Resolver<Maybe<ResolversTypes['Float']>, ParentType, ContextType>;
   zScore?: Resolver<Maybe<ResolversTypes['Float']>, ParentType, ContextType>;
 };
 
-export type ReturnSinceTradeResolvers<
-  ContextType = any,
-  ParentType extends ResolversParentTypes['ReturnSinceTrade'] =
-    ResolversParentTypes['ReturnSinceTrade'],
-> = {
+export type ReturnSinceTradeResolvers<ContextType = any, ParentType extends ResolversParentTypes['ReturnSinceTrade'] = ResolversParentTypes['ReturnSinceTrade']> = {
   baselineDate?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   flowAdjusted?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
   latestDate?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   returnPct?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
 };
 
-export type RiskPayloadResolvers<
-  ContextType = any,
-  ParentType extends ResolversParentTypes['RiskPayload'] =
-    ResolversParentTypes['RiskPayload'],
-> = {
+export type RiskPayloadResolvers<ContextType = any, ParentType extends ResolversParentTypes['RiskPayload'] = ResolversParentTypes['RiskPayload']> = {
   asOf?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  bottomCorrelations?: Resolver<
-    Array<ResolversTypes['CorrelationPair']>,
-    ParentType,
-    ContextType
-  >;
+  bottomCorrelations?: Resolver<Array<ResolversTypes['CorrelationPair']>, ParentType, ContextType>;
   es95?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
   es95TenDay?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
   es99?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
   es99TenDay?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
-  garchReason?: Resolver<
-    Maybe<ResolversTypes['String']>,
-    ParentType,
-    ContextType
-  >;
-  garchVolAnnualized?: Resolver<
-    Maybe<ResolversTypes['Float']>,
-    ParentType,
-    ContextType
-  >;
-  garchVolDaily?: Resolver<
-    Maybe<ResolversTypes['Float']>,
-    ParentType,
-    ContextType
-  >;
-  requestedWindowDays?: Resolver<
-    ResolversTypes['Int'],
-    ParentType,
-    ContextType
-  >;
-  topCorrelations?: Resolver<
-    Array<ResolversTypes['CorrelationPair']>,
-    ParentType,
-    ContextType
-  >;
+  garchReason?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  garchVolAnnualized?: Resolver<Maybe<ResolversTypes['Float']>, ParentType, ContextType>;
+  garchVolDaily?: Resolver<Maybe<ResolversTypes['Float']>, ParentType, ContextType>;
+  requestedWindowDays?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  topCorrelations?: Resolver<Array<ResolversTypes['CorrelationPair']>, ParentType, ContextType>;
   var95?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
   var95TenDay?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
   var99?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
   var99TenDay?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
-  weightedVolAnnualized?: Resolver<
-    Maybe<ResolversTypes['Float']>,
-    ParentType,
-    ContextType
-  >;
-  weightedVolCoverage?: Resolver<
-    ResolversTypes['Float'],
-    ParentType,
-    ContextType
-  >;
+  weightedVolAnnualized?: Resolver<Maybe<ResolversTypes['Float']>, ParentType, ContextType>;
+  weightedVolCoverage?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
   windowDays?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-  windowNote?: Resolver<
-    Maybe<ResolversTypes['String']>,
-    ParentType,
-    ContextType
-  >;
+  windowNote?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
 };
 
-export type SectorSliceResolvers<
-  ContextType = any,
-  ParentType extends ResolversParentTypes['SectorSlice'] =
-    ResolversParentTypes['SectorSlice'],
-> = {
+export type SectorSliceResolvers<ContextType = any, ParentType extends ResolversParentTypes['SectorSlice'] = ResolversParentTypes['SectorSlice']> = {
   holdings?: Resolver<Array<ResolversTypes['String']>, ParentType, ContextType>;
   isCash?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   return?: Resolver<Maybe<ResolversTypes['Float']>, ParentType, ContextType>;
-  vsBenchmark?: Resolver<
-    Maybe<ResolversTypes['Float']>,
-    ParentType,
-    ContextType
-  >;
+  vsBenchmark?: Resolver<Maybe<ResolversTypes['Float']>, ParentType, ContextType>;
   weight?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
 };
 
-export type SectorWeightsPayloadResolvers<
-  ContextType = any,
-  ParentType extends ResolversParentTypes['SectorWeightsPayload'] =
-    ResolversParentTypes['SectorWeightsPayload'],
-> = {
+export type SectorWeightsPayloadResolvers<ContextType = any, ParentType extends ResolversParentTypes['SectorWeightsPayload'] = ResolversParentTypes['SectorWeightsPayload']> = {
   asOf?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   benchmarkReturn?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
-  holdings?: Resolver<
-    Array<ResolversTypes['HoldingSlice']>,
-    ParentType,
-    ContextType
-  >;
-  horizon?: Resolver<
-    ResolversTypes['DashboardHorizon'],
-    ParentType,
-    ContextType
-  >;
-  sectors?: Resolver<
-    Array<ResolversTypes['SectorSlice']>,
-    ParentType,
-    ContextType
-  >;
+  holdings?: Resolver<Array<ResolversTypes['HoldingSlice']>, ParentType, ContextType>;
+  horizon?: Resolver<ResolversTypes['DashboardHorizon'], ParentType, ContextType>;
+  sectors?: Resolver<Array<ResolversTypes['SectorSlice']>, ParentType, ContextType>;
 };
 
-export type SeriesPointResolvers<
-  ContextType = any,
-  ParentType extends ResolversParentTypes['SeriesPoint'] =
-    ResolversParentTypes['SeriesPoint'],
-> = {
+export type SeriesPointResolvers<ContextType = any, ParentType extends ResolversParentTypes['SeriesPoint'] = ResolversParentTypes['SeriesPoint']> = {
   date?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   value?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
 };
 
-export type StalePriceTargetsResolvers<
-  ContextType = any,
-  ParentType extends ResolversParentTypes['StalePriceTargets'] =
-    ResolversParentTypes['StalePriceTargets'],
-> = {
+export type StalePriceTargetsResolvers<ContextType = any, ParentType extends ResolversParentTypes['StalePriceTargets'] = ResolversParentTypes['StalePriceTargets']> = {
   count?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-  tickers?: Resolver<
-    Array<ResolversTypes['StaleTarget']>,
-    ParentType,
-    ContextType
-  >;
+  tickers?: Resolver<Array<ResolversTypes['StaleTarget']>, ParentType, ContextType>;
 };
 
-export type StaleTargetResolvers<
-  ContextType = any,
-  ParentType extends ResolversParentTypes['StaleTarget'] =
-    ResolversParentTypes['StaleTarget'],
-> = {
-  lastEarningsDate?: Resolver<
-    ResolversTypes['String'],
-    ParentType,
-    ContextType
-  >;
+export type StaleTargetResolvers<ContextType = any, ParentType extends ResolversParentTypes['StaleTarget'] = ResolversParentTypes['StaleTarget']> = {
+  lastEarningsDate?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   priceTargetDate?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   ticker?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
 };
@@ -1128,3 +790,4 @@ export type Resolvers<ContextType = any> = {
   StalePriceTargets?: StalePriceTargetsResolvers<ContextType>;
   StaleTarget?: StaleTargetResolvers<ContextType>;
 };
+
