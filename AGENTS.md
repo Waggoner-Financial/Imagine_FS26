@@ -1,4 +1,21 @@
-# TypeScript Monorepo Template
+# Imagine FS26
+
+## This Project
+
+A Portfolio Dashboard built against a mock GraphQL API over synthetic data. Read
+`docs/spec.md` before feature work; it is the product spec.
+
+- `apps/mock-api` is the GraphQL server. `schema.graphql` is the contract and
+  the source of truth. After editing it, run `moon run mock-api:codegen` and
+  commit `src/generated/resolvers-types.ts`; never edit that file by hand. CI's
+  `mock-api:codegen-check` fails when it is stale.
+- `packages/mock-data` holds the sample portfolios and the pure functions that
+  derive every dashboard figure. It knows nothing about GraphQL. Keep figures
+  derived rather than hardcoded: `test/derive.test.ts` asserts the spec's
+  reconciliation figures, so an edited weight shows exactly what stopped adding
+  up.
+- A figure that cannot be computed is `null` with a sibling `reason` field,
+  never a zero or an empty string.
 
 ## Agent Environment
 
