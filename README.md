@@ -23,6 +23,13 @@ no real portfolio or firm.
 
 ## Getting started
 
+A deployed copy of the mock API runs at
+<https://imaginemock-api-production.up.railway.app/graphql>. Point your frontend
+there, or open it in a browser to explore the schema in GraphiQL. It redeploys
+automatically when the API or the sample data changes on `main`.
+
+To run it locally instead:
+
 ```bash
 proto use          # installs the pinned bun, pnpm, node and moon
 pnpm install
