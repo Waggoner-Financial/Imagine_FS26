@@ -1,30 +1,92 @@
-# TypeScript Monorepo Template
+# Imagine FS26 — Portfolio Dashboard
 
-Starter template for new projects. It provides the toolchain — pnpm workspaces
-with a catalog, [moon](https://moonrepo.dev) as task runner,
-[proto](https://moonrepo.dev/docs/proto) for tool version pins,
-oxlint/oxfmt/stylelint, Bun's test runner, CI, and agent instructions — without
-any product source code.
+Build a one-page dashboard for a model portfolio: seven panels covering price
+action, valuation, risk, drift, expected return, deployment and sector weights.
 
-## Start
+Everything the page needs to read is already here, served by a mock GraphQL API
+over synthetic data. **What to build is described in
+[`docs/spec.md`](docs/spec.md)** — start there.
+
+All figures in this repository are invented. The tickers are real public
+companies, but the weights, returns, price targets and account figures describe
+no real portfolio or firm.
+
+## What's in the repo
+
+| Path                 | What it is                                                                                    |
+| -------------------- | --------------------------------------------------------------------------------------------- |
+| `docs/spec.md`       | The spec: panels, behaviour, the API contract and the sample data                             |
+| `apps/mock-api`      | The GraphQL server. `schema.graphql` is the contract                                          |
+| `packages/mock-data` | The five sample portfolios and the pure functions that derive every figure                    |
+| `apps/`              | Where your dashboard app goes                                                                 |
+| `AGENTS.md`          | Instructions for AI coding agents working in this repo; conventions live in `.agents/skills/` |
+
+## Getting started
 
 ```bash
-proto use        # install pinned bun, pnpm, node, moon
+proto use          # installs the pinned bun, pnpm, node and moon
 pnpm install
-moon run root:format root:lint
-moonx template:build
-moonx template:test
-moonx template:typecheck
+moon run mock-api:dev
 ```
 
-## Layout
+Open <http://localhost:4000/graphql>. In a browser that's GraphiQL, an in-page
+editor with autocomplete and documentation for every field. Try:
 
-- `packages/template` — placeholder library wired into the full pipeline (tsdown
-  build, bun test, tsgo typecheck). Rename or copy it to start real work; new
-  libraries go under `packages/`, new apps under `apps/`.
-- `moon.yml` — root project (repo-wide lint/format/clean/worktree tasks). Keep
-  its `dependsOn` list in sync with dist-producing packages.
-- `.moon/tasks/` — shared task definitions inherited by every project.
-- `.agents/skills/` — agent-facing conventions; `AGENTS.md` is the entry point.
-- `scripts/` — worktree manager (`wt.ts`), dev-server helpers; see
-  `scripts/README.md`.
+```graphql
+{
+  portfolioDashboardSummary(portfolioId: "p-equity") {
+    portfolio {
+      code
+      name
+    }
+    holdingsCount
+    returnSinceTrade {
+      returnPct
+    }
+  }
+}
+```
+
+## The sample portfolios
+
+Every panel has an empty state, and each one is reachable by picking the right
+portfolio — build and check them all without touching the data.
+
+| Portfolio id | Shows                                                                    |
+| ------------ | ------------------------------------------------------------------------ |
+| `p-equity`   | The full twelve-name book, every panel populated (default)               |
+| `p-earnings` | No trade date: header and Drift empty states                             |
+| `p-dividend` | Thin coverage: a greyed and a dashed 4P multiple                         |
+| `p-fcf`      | A flat portfolio: Drift attribution reads "n/a"                          |
+| `p-revenue`  | Missing price targets, GARCH that did not converge, a stock above target |
+
+## Working in this repo
+
+Tasks run through [moon](https://moonrepo.dev):
+
+```bash
+moon run :test :typecheck         # every project's tests and typecheck
+moon run root:format root:lint    # format and lint the whole repo
+moon run mock-api:codegen         # regenerate API types after editing the schema
+moon tasks mock-api               # list a project's tasks
+```
+
+**Changing the API contract.** Edit `apps/mock-api/schema.graphql`, run
+`moon run mock-api:codegen`, update the resolvers until the typecheck passes,
+and commit the regenerated `src/generated` file with your change. CI fails if
+the generated types are out of date.
+
+**CI** (`.github/workflows/ci.yml`) runs on every pull request and push to
+`main`: format check, then build, test, typecheck and lint for the projects the
+change affects.
+
+**Deployment.** The mock API deploys to [Railway](https://railway.com):
+`railway.json` points Railway at `apps/mock-api/Dockerfile`, which bundles the
+server into a single file. Railway waits for `/health` before routing traffic.
+
+## Toolchain
+
+pnpm workspaces with a dependency catalog, moon as the task runner,
+[proto](https://moonrepo.dev/docs/proto) for tool version pins, oxlint, oxfmt
+and stylelint, and Bun's test runner. Libraries go under `packages/`, apps under
+`apps/`. `scripts/README.md` covers the worktree manager and dev-server helpers.
