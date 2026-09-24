@@ -39,20 +39,30 @@ tasks:
 
   # Graph-connected local servers stay CI-skipped. In CI-marked shells
   # (agent harnesses): `moonx mock-api:dev --ignore-ci-checks`.
+  #
+  # Both listen on 4000 plus the worktree's port offset (0 in the main clone),
+  # so servers in parallel worktrees never collide; see scripts/README.md.
+  # run-dev.sh first stops any stale server still holding that port.
   dev:
-    command: 'bun --watch src/main.ts'
+    script:
+      'export PORT=$(( ${WORKTREE_PORT_OFFSET:-0} + 4000 )) && bash
+      ../../scripts/run-dev.sh "$PORT" -- bun --watch src/main.ts'
     deps:
       - '^:build'
     options:
       cache: false
+      envFile: '/.env.worktree'
       persistent: true
       runInCI: 'skip'
 
   start:
-    command: 'bun src/main.ts'
+    script:
+      'export PORT=$(( ${WORKTREE_PORT_OFFSET:-0} + 4000 )) && bash
+      ../../scripts/run-dev.sh "$PORT" -- bun src/main.ts'
     deps:
       - '^:build'
     options:
       cache: false
+      envFile: '/.env.worktree'
       persistent: true
       runInCI: 'skip'
