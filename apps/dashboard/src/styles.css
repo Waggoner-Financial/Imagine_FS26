@@ -1,0 +1,269 @@
+/*
+ * One small stylesheet: design tokens as custom properties, with a dark
+ * palette swapped in by the system setting. Replace freely; the visual design
+ * is yours to decide (docs/spec.md describes behaviour, not pixels).
+ */
+:root {
+  --bg: #f5f6f8;
+  --card: #fff;
+  --text: #1c1f24;
+  --muted: #5b6372;
+  --border: #dde1e7;
+  --accent: #2f5bd3;
+  --up: #1e7a46;
+  --down: #b3261e;
+  --radius: 10px;
+
+  color: var(--text);
+  font-family:
+    system-ui,
+    -apple-system,
+    'Segoe UI',
+    sans-serif;
+  background: var(--bg);
+  color-scheme: light dark;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #111418;
+    --card: #1a1e24;
+    --text: #e8eaee;
+    --muted: #9aa3b2;
+    --border: #2b313a;
+    --accent: #7ea0ff;
+    --up: #5fd08e;
+    --down: #ff8a80;
+  }
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+}
+
+.page {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 24px 16px 48px;
+}
+
+.page-header {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  align-items: flex-end;
+  justify-content: space-between;
+  margin-bottom: 24px;
+}
+
+.page-title {
+  margin: 0 0 8px;
+  font-size: 1.25rem;
+}
+
+.page-meta {
+  margin: 8px 0 0;
+  color: var(--muted);
+}
+
+.page-error {
+  color: var(--down);
+}
+
+.portfolio-select select {
+  padding: 6px 10px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: inherit;
+  font: inherit;
+  font-size: 1.1rem;
+  font-weight: 600;
+  background: var(--card);
+}
+
+/* Spec §2: three columns on wide screens, two on tablets, one on phones. */
+.grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+}
+
+@media (width >= 700px) {
+  .grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (width >= 1100px) {
+  .grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  min-height: 200px;
+  padding: 16px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--card);
+}
+
+.card-header {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.card-title {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.card-body {
+  flex: 1;
+}
+
+.card-footer {
+  margin-top: 12px;
+  color: var(--muted);
+  font-size: 0.8rem;
+}
+
+.card-error {
+  color: var(--down);
+}
+
+.card-error button {
+  padding: 4px 12px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: var(--text);
+  font: inherit;
+  background: transparent;
+  cursor: pointer;
+}
+
+.skeleton {
+  height: 96px;
+  border-radius: 8px;
+  background: linear-gradient(90deg, var(--border), var(--card), var(--border));
+  background-size: 200% 100%;
+  animation: shimmer 1.2s linear infinite;
+}
+
+@keyframes shimmer {
+  from {
+    background-position: 200% 0;
+  }
+
+  to {
+    background-position: -200% 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .skeleton {
+    animation: none;
+  }
+}
+
+.segmented {
+  display: inline-flex;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+}
+
+.segmented button {
+  padding: 4px 10px;
+  border: 0;
+  color: var(--muted);
+  font: inherit;
+  font-size: 0.85rem;
+  background: transparent;
+  cursor: pointer;
+}
+
+.segmented button + button {
+  border-left: 1px solid var(--border);
+}
+
+.segmented button[aria-pressed='true'] {
+  color: var(--card);
+  background: var(--accent);
+}
+
+.segmented button:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: -2px;
+}
+
+.stats {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+  margin: 0;
+}
+
+.stat dt {
+  color: var(--muted);
+  font-size: 0.8rem;
+}
+
+.stat-value {
+  margin: 4px 0 0;
+  font-size: 1.4rem;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+.stat-note {
+  margin: 2px 0 0;
+  color: var(--muted);
+  font-size: 0.8rem;
+}
+
+/* Colour is never the only carrier of sign: figures keep their +/- too. */
+.pill {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 999px;
+  color: var(--text);
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  background: var(--border);
+}
+
+.pill-up {
+  color: var(--up);
+}
+
+.pill-down {
+  color: var(--down);
+}
+
+.placeholder {
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  white-space: nowrap;
+  clip-path: inset(50%);
+}

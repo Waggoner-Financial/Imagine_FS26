@@ -1,0 +1,50 @@
+$schema: 'https://moonrepo.dev/schemas/project.json'
+
+# The starter dashboard: a Vite + React app that reads the mock API. Inherits
+# test/typecheck from the shared bun-common tasks. Nothing imports this app,
+# so it is not listed in the root project's dependsOn.
+language: 'typescript'
+layer: 'application'
+
+tasks:
+  # Static production build into dist/, deployable to any static host.
+  build:
+    command: 'vite build'
+    inputs:
+      - 'src/**/*'
+      - 'index.html'
+      - 'vite.config.ts'
+      - 'tsconfig.json'
+    outputs:
+      - 'dist'
+
+  # Regenerates src/generated from the queries written with `graphql(...)` in
+  # src/ and the mock API's schema. Commit the output.
+  codegen:
+    command: 'graphql-codegen --config codegen.ts'
+    options:
+      cache: false
+      runInCI: 'always'
+
+  # Fails when a query or the API schema changed but src/generated did not.
+  codegen-check:
+    command: 'graphql-codegen --config codegen.ts --check'
+    inputs:
+      - 'codegen.ts'
+      - 'src/**/*'
+      - '/apps/mock-api/schema.graphql'
+    options:
+      runInCI: 'always'
+
+  # Listens on 5173 plus the worktree's port offset (0 in the main clone), so
+  # dev servers in parallel worktrees never collide; see scripts/README.md.
+  # It has no build-graph edges, so it also runs in CI-marked agent shells.
+  dev:
+    script:
+      'PORT=$(( ${WORKTREE_PORT_OFFSET:-0} + 5173 )) && bash
+      ../../scripts/run-dev.sh "$PORT" -- vite --port "$PORT" --strictPort'
+    options:
+      cache: false
+      envFile: '/.env.worktree'
+      persistent: true
+      runInCI: 'always'
