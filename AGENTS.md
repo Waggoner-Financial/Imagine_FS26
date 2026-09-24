@@ -21,6 +21,10 @@ A Portfolio Dashboard built against a mock GraphQL API over synthetic data. Read
   derived rather than hardcoded: `test/derive.test.ts` asserts the spec's
   reconciliation figures, so an edited weight shows exactly what stopped adding
   up.
+- Both apps deploy to Railway from `main`: the API through `railway.json`, the
+  dashboard through `apps/dashboard/railway.json`. Each service rebuilds only
+  when its watched paths change, so keep those lists current when you move
+  files.
 - A figure that cannot be computed is `null` with a sibling `reason` field,
   never a zero or an empty string. The dashboard renders it as a dash plus the
   reason.
