@@ -3,6 +3,9 @@
   "files": [],
   "references": [
     {
+      "path": "apps/dashboard/tsconfig.json"
+    },
+    {
       "path": "apps/mock-api/tsconfig.json"
     },
     {

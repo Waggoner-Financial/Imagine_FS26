@@ -131,6 +131,7 @@ in `scripts/wt.ts`:
 | Service             | Base port |
 | ------------------- | --------- |
 | Chrome remote debug | 9222      |
+| Dashboard           | 5173      |
 | Mock API            | 4000      |
 
 Every worktree owns a **port offset** (0, 10, 20, 30, …). Its actual ports are

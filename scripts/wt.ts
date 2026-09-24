@@ -47,6 +47,7 @@ const WORKTREES_HOME = join(homedir(), 'worktrees', mainCloneBasename());
 // `wt ps` and `wt clean` know about it (see scripts/README.md).
 const PORT_BASES = {
   chrome: 9222,
+  dashboard: 5173,
   mockApi: 4000,
 } as const;
 
@@ -371,6 +372,7 @@ function cmdPs(): number {
   const worktrees = enumerateWorktrees();
   const services: Array<[keyof typeof PORT_BASES, string]> = [
     ['chrome', 'chrome'],
+    ['dashboard', 'dashboard'],
     ['mockApi', 'mock-api'],
   ];
 
@@ -635,6 +637,7 @@ function printPortMap(slug: string, offset: number, path: string): void {
   console.log(`
 Worktree: ${slug} (offset ${offset})
   chrome debug: localhost:${ports.chrome} (user-data-dir /tmp/chrome-devtools-${slug})
+  dashboard:    http://localhost:${ports.dashboard}
   mock API:     http://localhost:${ports.mockApi}/graphql
 
 cd ${path}
