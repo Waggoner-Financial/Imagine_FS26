@@ -4,18 +4,30 @@
 
 A Portfolio Dashboard built against a mock GraphQL API over synthetic data. Read
 `docs/spec.md` before feature work; it is the product spec.
+`docs/learning-path.md` is the suggested order of work.
 
 - `apps/mock-api` is the GraphQL server. `schema.graphql` is the contract and
   the source of truth. After editing it, run `moon run mock-api:codegen` and
   commit `src/generated/resolvers-types.ts`; never edit that file by hand. CI's
-  `mock-api:codegen-check` fails when it is stale.
+  `mock-api:codegen-check` fails when it is stale. A schema change also needs
+  `moon run dashboard:codegen`, since the dashboard's types derive from it.
+- `apps/dashboard` is the Vite + React dashboard. Its queries live in
+  `src/api/queries.ts`, written with `graphql(...)`; after adding or changing
+  one, run `moon run dashboard:codegen` and commit `src/generated/`.
+  `src/panels/deployment-panel.tsx` is the reference panel: a typed query keyed
+  by portfolio, rendered in a `Card` that owns loading, error and as-of states.
 - `packages/mock-data` holds the sample portfolios and the pure functions that
   derive every dashboard figure. It knows nothing about GraphQL. Keep figures
   derived rather than hardcoded: `test/derive.test.ts` asserts the spec's
   reconciliation figures, so an edited weight shows exactly what stopped adding
   up.
 - A figure that cannot be computed is `null` with a sibling `reason` field,
-  never a zero or an empty string.
+  never a zero or an empty string. The dashboard renders it as a dash plus the
+  reason.
+- New dependencies go in the `pnpm-workspace.yaml` catalog at an exact version,
+  and `minimumReleaseAge` rejects versions published less than 7 days ago:
+  choose a version at least a week old, or `pnpm install` fails with
+  `ERR_PNPM_NO_MATURE_MATCHING_VERSION`.
 
 ## Agent Environment
 
