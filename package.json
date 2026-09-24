@@ -1,5 +1,5 @@
 {
-  "name": "@template/root",
+  "name": "@imagine/root",
   "private": true,
   "type": "module",
   "devDependencies": {
