@@ -45,7 +45,7 @@ each package and use `describe`, `test`, and `expect` from `bun:test`.
 Prefer unit or integration tests by default:
 
 ```bash
-moonx template:test
+moonx mock-data:test
 ```
 
 `moon run :test` runs every project's suite. Tests import workspace dependencies

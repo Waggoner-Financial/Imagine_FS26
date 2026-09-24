@@ -31,7 +31,7 @@ Most local moon tasks (formatters, worktree management) are configured with
 harnesses. Tasks connected to the build graph (dev servers, prod serves, e2e
 variants, publish guards) stay CI-skipped — run those with
 `moonx <target> --ignore-ci-checks`, e.g.
-`moonx template:dev --ignore-ci-checks`. For non-moon commands that CI-gate
+`moonx mock-api:dev --ignore-ci-checks`. For non-moon commands that CI-gate
 themselves, unset the var: `CI= pnpm publish --dry-run`.
 
 ## Toolchain
