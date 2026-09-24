@@ -1,6 +1,6 @@
 import { describe, expect, test } from 'bun:test';
 
-import { yoga } from '../src/server';
+import { handleRequest, yoga } from '../src/server';
 
 type GraphQLError = { extensions?: { code?: string }; message: string };
 type GraphQLResult<T> = { data?: T | null; errors?: GraphQLError[] };
@@ -790,5 +790,31 @@ describe('portfolioSectorWeights', () => {
   test('returns one holding per row of the book, cash included', async () => {
     const data = await run<Payload>(QUERY, { id: 'p-equity' });
     expect(data.portfolioSectorWeights.holdings).toHaveLength(13);
+  });
+});
+
+describe('routing', () => {
+  test('redirects the bare domain to the GraphQL endpoint', async () => {
+    const response = await handleRequest(new Request('http://localhost/'));
+    expect(response.status).toBe(302);
+    expect(response.headers.get('location')).toBe('http://localhost/graphql');
+  });
+
+  test('answers the health check', async () => {
+    const response = await handleRequest(
+      new Request('http://localhost/health')
+    );
+    expect(response.status).toBe(200);
+  });
+
+  test('passes GraphQL requests through to the API', async () => {
+    const response = await handleRequest(
+      new Request('http://localhost/graphql', {
+        body: JSON.stringify({ query: '{ dashboardPortfolios { id } }' }),
+        headers: { 'content-type': 'application/json' },
+        method: 'POST',
+      })
+    );
+    expect(response.status).toBe(200);
   });
 });
