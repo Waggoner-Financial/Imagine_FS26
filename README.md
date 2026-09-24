@@ -21,6 +21,15 @@ no real portfolio or firm.
 | `apps/`              | Where your dashboard app goes                                                                 |
 | `AGENTS.md`          | Instructions for AI coding agents working in this repo; conventions live in `.agents/skills/` |
 
+## Prerequisites
+
+- [Git](https://git-scm.com/downloads)
+- [proto](https://moonrepo.dev/docs/proto/install), which installs every other
+  tool (Bun, pnpm, Node and moon) at the versions pinned in `.prototools`. After
+  installing it, open a new terminal so its shims are on your `PATH`.
+- Docker is optional. It is only needed to build the mock API's deployment image
+  locally.
+
 ## Getting started
 
 A deployed copy of the mock API runs at
