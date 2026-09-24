@@ -139,11 +139,15 @@ fails if either set of generated types is out of date.
 `main`: format check, then build, test, typecheck and lint for the projects the
 change affects, and the codegen checks.
 
-**Deployment.** The mock API deploys to [Railway](https://railway.com) whenever
-it or the sample data changes on `main`: `railway.json` points Railway at
-`apps/mock-api/Dockerfile`, which bundles the server into a single file, and
-Railway waits for `/health` before routing traffic. Deploying the dashboard is
-yours to set up; see milestone 5 of the learning path.
+**Deployment.** Both apps deploy to [Railway](https://railway.com) from `main`,
+as two services in one project. Each rebuilds when its own files or the shared
+lockfile change:
+
+- The **mock API** follows `railway.json`, which builds
+  `apps/mock-api/Dockerfile` (the server bundled into one file). Railway waits
+  for `/health` before routing traffic.
+- The **dashboard** follows `apps/dashboard/railway.json`, which builds
+  `apps/dashboard/Dockerfile`: the Vite build, served as static files by Caddy.
 
 ## Toolchain
 

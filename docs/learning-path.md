@@ -64,18 +64,22 @@ including its empty state, and its tests run in CI.
 **Done when** Price Action draws its lines for every horizon, and shows the
 index series' empty state with its reason.
 
-## 5. Deploy the dashboard
+## 5. Extend the deployment pipeline
 
-- The mock API already deploys continuously: Railway watches `main` and
-  redeploys when the API changes (see `railway.json`). Now do the same for the
-  dashboard.
-- `moon run dashboard:build` writes static files to `apps/dashboard/dist`. Write
-  a GitHub Actions workflow that builds and deploys them on every push to
-  `main`. GitHub Pages is free for public repositories; it serves the site under
-  the repository's path, so set Vite's `base` option to match.
-- Stretch: build a preview deployment for every pull request.
+- Both apps already deploy continuously: merging to `main` rebuilds whichever
+  one changed, on Railway. Read `railway.json`, `apps/dashboard/railway.json`
+  and the two Dockerfiles, and trace a change from merge to live.
+- Then extend the pipeline with one of these:
+  - **Preview environments:** turn on Railway's PR environments, so every pull
+    request gets its own URL that reviewers can click.
+  - **A post-deploy smoke test:** a GitHub Actions workflow that checks the live
+    dashboard and API still respond after each merge, and fails loudly if not.
+  - **A second host:** deploy the dashboard to GitHub Pages with an Actions
+    workflow. Pages is free for public repositories; it serves the site under
+    the repository's path, so set Vite's `base` option to match.
 
-**Done when** merging to `main` updates a public URL with no manual steps.
+**Done when** you can explain every step between a merge and a live change, and
+your extension runs with no manual steps.
 
 ## 6. Work with AI agents
 
