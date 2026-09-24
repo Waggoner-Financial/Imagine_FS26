@@ -4,10 +4,13 @@ You are building one read-only dashboard page for a model portfolio, against a
 mock GraphQL API that serves synthetic data. This document describes the page
 (§1–3), the API contract (§4) and the sample data behind it (§5).
 
-- **The API** lives in `apps/mock-api`. Run it with `moon run mock-api:dev` and
-  open <http://localhost:4000/graphql>, where GraphiQL documents every field.
+- **The API** lives in `apps/mock-api`, with a hosted copy at
+  <https://imaginemock-api-production.up.railway.app/graphql>. Open it in a
+  browser for GraphiQL, which lists every type and field.
   `apps/mock-api/schema.graphql` is the authoritative contract: where this
   document and the schema disagree, the schema wins.
+- **A starter app** lives in `apps/dashboard`. It already renders the header
+  (§3.1) and the Deployment panel (§3.7); the other panels are placeholders.
 - **The data is synthetic.** The tickers are real public companies, but the
   weights, returns, price targets and account figures describe no real portfolio
   or firm.
