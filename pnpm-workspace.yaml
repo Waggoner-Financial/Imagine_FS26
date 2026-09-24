@@ -14,6 +14,7 @@ minimumReleaseAgeExclude:
   - '@moonrepo/core-macos-x64'
   - '@moonrepo/core-windows-x64-msvc'
   - '@oxc-project/types'
+  - '@rolldown/binding-android-arm-eabi'
   - '@rolldown/binding-android-arm64'
   - '@rolldown/binding-darwin-arm64'
   - '@rolldown/binding-darwin-x64'
