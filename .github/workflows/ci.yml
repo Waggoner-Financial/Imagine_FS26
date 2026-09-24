@@ -33,8 +33,8 @@ jobs:
       # Note on targets: moon ci executes every affected runInCI-enabled
       # task — the target list adds entry points (so cold runs are explicit)
       # but never subtracts. Anything that must not run in CI is
-      # runInCI: 'skip' in its task config. mock-api:codegen-check fails
-      # when schema.graphql changed but the generated types were not.
+      # runInCI: 'skip' in its task config. The codegen checks fail when
+      # schema.graphql or a query changed but the generated types were not.
       # --summary detailed appends an end-of-log recap naming every action
       # with status, duration, and cache hash, so a failed target is readable
       # from the log tail without scrolling through interleaved task output.
@@ -45,7 +45,7 @@ jobs:
       - name: Run affected tasks
         run: >-
           moon ci --include-relations --summary detailed :build :test :typecheck
-          root:lint root:lint-css mock-api:codegen-check
+          root:lint root:lint-css mock-api:codegen-check dashboard:codegen-check
 
   actions-pinned:
     name: Actions pinned to SHA
