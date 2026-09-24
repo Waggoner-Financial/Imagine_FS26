@@ -797,7 +797,14 @@ describe('routing', () => {
   test('redirects the bare domain to the GraphQL endpoint', async () => {
     const response = await handleRequest(new Request('http://localhost/'));
     expect(response.status).toBe(302);
-    expect(response.headers.get('location')).toBe('http://localhost/graphql');
+    expect(response.headers.get('location')).toBe('/graphql');
+  });
+
+  test('keeps the redirect relative so a TLS proxy never downgrades it', async () => {
+    const response = await handleRequest(
+      new Request('http://internal-host:8080/')
+    );
+    expect(response.headers.get('location')).not.toContain('http');
   });
 
   test('answers the health check', async () => {
