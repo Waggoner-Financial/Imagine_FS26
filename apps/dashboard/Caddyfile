@@ -1,0 +1,10 @@
+# Serves the built dashboard from /srv. Railway provides PORT; 8080 is the
+# fallback for running the image locally.
+:{$PORT:8080} {
+	root * /srv
+	encode zstd gzip
+	# Vite fingerprints every file under /assets, so browsers may cache them
+	# for good; index.html is left to normal revalidation.
+	header /assets/* Cache-Control "public, max-age=31536000, immutable"
+	file_server
+}
