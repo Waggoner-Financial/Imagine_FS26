@@ -143,7 +143,7 @@ change affects, and the codegen checks.
 it or the sample data changes on `main`: `railway.json` points Railway at
 `apps/mock-api/Dockerfile`, which bundles the server into a single file, and
 Railway waits for `/health` before routing traffic. Deploying the dashboard is
-yours to set up; see milestone 5 of the learning path.
+yours to set up; see milestone 6 of the learning path.
 
 ## Toolchain
 
