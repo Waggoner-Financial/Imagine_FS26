@@ -5,6 +5,9 @@ This repository has two goals: build the dashboard described in
 you do it. The milestones below build on each other. Each ends with a concrete
 **Done when** so you can tell you are finished.
 
+Along the way you build both halves of CI/CD yourselves: a CI job in milestone
+5, and the dashboard's deployment in milestone 6.
+
 From milestone 2 on, every change goes through a pull request: `main` is
 protected, so nothing merges until CI passes.
 
@@ -64,7 +67,30 @@ including its empty state, and its tests run in CI.
 **Done when** Price Action draws its lines for every horizon, and shows the
 index series' empty state with its reason.
 
-## 5. Deploy the dashboard
+## 5. Write your own CI job
+
+So far CI runs checks someone else wrote. Now write one: a few end-to-end tests
+that open the dashboard in a real browser, run on every pull request.
+
+- Add [Playwright](https://playwright.dev) the repository's way (an exact
+  version in the catalog, at least a week old) and give `apps/dashboard` a
+  `test-e2e` moon task, the name the testing skill expects.
+- Keep it small, as the testing skill advises: two or three tests of what only a
+  real browser shows, such as the page loading data and an empty state
+  rendering. Switching to `p-earnings` should show "Trade date not set".
+- The tests need the dashboard running. It is a port-bound server, so follow
+  "Adding a new port-bound service" in `scripts/README.md`.
+- Decide what the tests talk to: the hosted mock API, or one started inside the
+  CI job. A local one means CI never fails because of a deployment you do not
+  control.
+- Add a job to `.github/workflows/ci.yml`, or a new workflow, that installs the
+  browsers and runs the tests. Then ask a repository admin to add it to the
+  ruleset's required checks, so a pull request cannot merge while it fails.
+
+**Done when** a pull request that breaks what a user sees fails your job, and
+the job is a required check.
+
+## 6. Deploy the dashboard
 
 - The mock API already deploys continuously: Railway watches `main` and
   redeploys when the API changes (see `railway.json`). Now do the same for the
@@ -77,7 +103,7 @@ index series' empty state with its reason.
 
 **Done when** merging to `main` updates a public URL with no manual steps.
 
-## 6. Work with AI agents
+## 7. Work with AI agents
 
 - Coding agents read `AGENTS.md` and the skills in `.agents/skills/`. Ask one to
   build a panel from its spec section, then review its pull request as you would
@@ -93,7 +119,7 @@ index series' empty state with its reason.
 **Done when** a panel an agent built from the spec has merged, along with one
 improvement to `AGENTS.md` or a skill based on what the agent got wrong.
 
-## 7. Stretch: change the contract end to end
+## 8. Stretch: change the contract end to end
 
 - Add a field the spec does not have, for example the portfolio's inception date
   on `DashboardSummary` (the sample data already has it). Edit
