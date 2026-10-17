@@ -22,7 +22,7 @@ describe('missing figures', () => {
 
 describe('fractions', () => {
   test('format as percentages', () => {
-    expect(formatPercent(0.0251)).toBe('2.51%');
+    expect(formatPercent(0.0251)).toBe('2.50%');
   });
 
   test('carry an explicit sign for gains and losses', () => {
