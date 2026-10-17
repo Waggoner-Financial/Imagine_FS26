@@ -64,12 +64,19 @@ every field. Try:
 }
 ```
 
-To run the API on your own machine instead, start it with
+To run the API on your own machine instead, start it in one terminal with
 `moon run mock-api:dev` (it listens on <http://localhost:4000/graphql>) and
-point the dashboard at it by creating `apps/dashboard/.env.local`:
+point the dashboard at the local API by creating `apps/dashboard/.env.local`:
 
 ```bash
 VITE_API_URL=http://localhost:4000/graphql
+```
+
+Then start the dashboard in a second terminal, or restart it if it was already
+running:
+
+```bash
+moon run dashboard:dev
 ```
 
 ## The sample portfolios
