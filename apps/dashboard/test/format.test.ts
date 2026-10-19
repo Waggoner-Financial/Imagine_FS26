@@ -33,6 +33,10 @@ describe('fractions', () => {
   test('show zero without a sign', () => {
     expect(formatSignedPercent(0)).toBe('0.00%');
   });
+
+  test('show losses with a minus sign', () => {
+    expect(formatPercent(-0.0142)).toBe('-1.42%');
+  });
 });
 
 describe('dollars', () => {
