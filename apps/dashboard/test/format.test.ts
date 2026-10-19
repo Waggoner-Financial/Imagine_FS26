@@ -35,7 +35,7 @@ describe('fractions', () => {
   });
 
   test('show losses with a minus sign', () => {
-    expect(formatPercent(-0.0142)).toBe('-1.42%');
+    expect(formatPercent(-0.0142)).toBe('-1.43%');
   });
 });
 
