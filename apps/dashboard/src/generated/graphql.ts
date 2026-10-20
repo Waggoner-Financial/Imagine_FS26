@@ -47,6 +47,13 @@ export type DeploymentQueryVariables = Exact<{
 
 export type DeploymentQuery = { deploymentSummary: { accountsCount: number, clientsCount: number, asOf: string, aum: { value: number | null, source: AumSource, reason: string | null }, gainLoss: Array<{ horizon: DashboardHorizon, value: number | null, pct: number | null, reason: string | null }> } };
 
+export type ExpectedReturnQueryVariables = Exact<{
+  portfolioId: string | number;
+}>;
+
+
+export type ExpectedReturnQuery = { portfolioExpectedReturn: { portfolioEr: number, coveredWeight: number, noTarget: Array<string>, asOf: string, topContributors: Array<{ ticker: string, targetWeight: number, price: number, priceTarget: number, er: number, contribution: number }>, bottomContributors: Array<{ ticker: string, targetWeight: number, price: number, priceTarget: number, er: number, contribution: number }>, stalePriceTargets: { count: number, tickers: Array<{ ticker: string, priceTargetDate: string, lastEarningsDate: string }> } } };
+
 export class TypedDocumentString<TResult, TVariables>
   extends String
   implements DocumentTypeDecoration<TResult, TVariables>
@@ -110,3 +117,37 @@ export const DeploymentDocument = new TypedDocumentString(`
   }
 }
     `) as unknown as TypedDocumentString<DeploymentQuery, DeploymentQueryVariables>;
+export const ExpectedReturnDocument = new TypedDocumentString(`
+    query ExpectedReturn($portfolioId: ID!) {
+  portfolioExpectedReturn(portfolioId: $portfolioId) {
+    portfolioEr
+    coveredWeight
+    topContributors {
+      ticker
+      targetWeight
+      price
+      priceTarget
+      er
+      contribution
+    }
+    bottomContributors {
+      ticker
+      targetWeight
+      price
+      priceTarget
+      er
+      contribution
+    }
+    noTarget
+    stalePriceTargets {
+      count
+      tickers {
+        ticker
+        priceTargetDate
+        lastEarningsDate
+      }
+    }
+    asOf
+  }
+}
+    `) as unknown as TypedDocumentString<ExpectedReturnQuery, ExpectedReturnQueryVariables>;
