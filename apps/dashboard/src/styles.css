@@ -13,6 +13,8 @@
   --up: #1e7a46;
   --down: #b3261e;
   --radius: 10px;
+  --warning: #8a4b08;
+  --warning-bg: #fff4d6;
 
   color: var(--text);
   font-family:
@@ -34,6 +36,8 @@
     --accent: #7ea0ff;
     --up: #5fd08e;
     --down: #ff8a80;
+    --warning: #ffd27a;
+    --warning-bg: #3a2a0f;
   }
 }
 
@@ -233,6 +237,189 @@ body {
   margin: 2px 0 0;
   color: var(--muted);
   font-size: 0.8rem;
+}
+
+.warning-badge {
+  display: inline-flex;
+  gap: 4px;
+  align-items: center;
+  padding: 4px 10px;
+  border: 1px solid var(--warning);
+  border-radius: 999px;
+  color: var(--warning);
+  font: inherit;
+  font-size: 0.8rem;
+  font-weight: 600;
+  background: var(--warning-bg);
+  cursor: pointer;
+}
+
+.warning-badge:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.rebalancer-summary {
+  padding-bottom: 12px;
+  margin: 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.rebalancer-headline {
+  display: flex;
+  gap: 10px;
+  align-items: baseline;
+}
+
+.rebalancer-headline dt {
+  color: var(--muted);
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.rebalancer-headline dd {
+  order: -1;
+  margin: 0;
+  font-size: 2rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.rebalancer-coverage dd {
+  margin: 4px 0 0;
+  color: var(--muted);
+  font-size: 0.8rem;
+}
+
+.figure-up {
+  color: var(--up);
+}
+
+.figure-down {
+  color: var(--down);
+}
+
+.rebalancer-table {
+  width: 100%;
+  margin-top: 16px;
+  border-collapse: collapse;
+  table-layout: fixed;
+  font-size: 0.8rem;
+}
+
+.rebalancer-table th,
+.rebalancer-table td {
+  padding: 8px 6px;
+  border-bottom: 1px solid var(--border);
+  text-align: right;
+  vertical-align: middle;
+  font-variant-numeric: tabular-nums;
+}
+
+.rebalancer-table th:first-child,
+.rebalancer-table td:first-child {
+  width: 42%;
+  text-align: left;
+}
+
+.rebalancer-table thead th {
+  color: var(--muted);
+  font-size: 0.7rem;
+  font-weight: 600;
+}
+
+.rebalancer-table abbr {
+  text-decoration: none;
+}
+
+.contributor-group th {
+  padding-top: 12px;
+  padding-bottom: 6px;
+  color: var(--muted);
+  font-size: 0.7rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  background: var(--bg);
+}
+
+.contributor-identity {
+  display: flex;
+  gap: 5px;
+  align-items: center;
+}
+
+.ticker-badge {
+  display: inline-block;
+  padding: 2px 7px;
+  border-radius: 5px;
+  color: var(--text);
+  font-weight: 700;
+  background: var(--border);
+}
+
+.stale-target-icon {
+  color: var(--warning);
+  font-size: 0.8rem;
+}
+
+.contributor-prices {
+  display: block;
+  margin-top: 4px;
+  color: var(--muted);
+  font-size: 0.68rem;
+  font-weight: 400;
+  white-space: nowrap;
+}
+
+.contributor-pp {
+  font-weight: 700;
+}
+
+.rebalancer-empty {
+  padding: 12px;
+  color: var(--muted);
+  text-align: center;
+}
+
+.rebalancer-notice {
+  padding: 10px;
+  margin-top: 12px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  font-size: 0.8rem;
+  background: var(--bg);
+}
+
+.rebalancer-notice h3 {
+  margin: 0 0 8px;
+  font-size: 0.9rem;
+}
+
+.rebalancer-notice p,
+.rebalancer-notice ul {
+  margin: 0;
+}
+
+.rebalancer-notice ul {
+  padding-left: 20px;
+}
+
+.warning-notice {
+  border-color: var(--warning);
+  background: var(--warning-bg);
+}
+
+@media (width < 420px) {
+  .rebalancer-table th,
+  .rebalancer-table td {
+    padding-right: 3px;
+    padding-left: 3px;
+    font-size: 0.72rem;
+  }
+
+  .contributor-prices {
+    font-size: 0.62rem;
+  }
 }
 
 /* Colour is never the only carrier of sign: figures keep their +/- too. */

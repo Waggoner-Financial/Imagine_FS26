@@ -18,11 +18,13 @@ type Documents = {
     "\n  query Portfolios {\n    dashboardPortfolios {\n      id\n      code\n      name\n    }\n  }\n": typeof types.PortfoliosDocument,
     "\n  query Summary($portfolioId: ID!) {\n    portfolioDashboardSummary(portfolioId: $portfolioId) {\n      holdingsCount\n      tradeDate\n      asOf\n      returnSinceTrade {\n        baselineDate\n        latestDate\n        returnPct\n        flowAdjusted\n      }\n    }\n  }\n": typeof types.SummaryDocument,
     "\n  query Deployment($portfolioId: ID!) {\n    deploymentSummary(portfolioId: $portfolioId) {\n      accountsCount\n      clientsCount\n      asOf\n      aum {\n        value\n        source\n        reason\n      }\n      gainLoss {\n        horizon\n        value\n        pct\n        reason\n      }\n    }\n  }\n": typeof types.DeploymentDocument,
+    "\n  query ExpectedReturn($portfolioId: ID!) {\n    portfolioExpectedReturn(portfolioId: $portfolioId) {\n      portfolioEr\n      coveredWeight\n      topContributors {\n        ticker\n        targetWeight\n        price\n        priceTarget\n        er\n        contribution\n      }\n      bottomContributors {\n        ticker\n        targetWeight\n        price\n        priceTarget\n        er\n        contribution\n      }\n      noTarget\n      stalePriceTargets {\n        count\n        tickers {\n          ticker\n          priceTargetDate\n          lastEarningsDate\n        }\n      }\n      asOf\n    }\n  }\n": typeof types.ExpectedReturnDocument,
 };
 const documents: Documents = {
     "\n  query Portfolios {\n    dashboardPortfolios {\n      id\n      code\n      name\n    }\n  }\n": types.PortfoliosDocument,
     "\n  query Summary($portfolioId: ID!) {\n    portfolioDashboardSummary(portfolioId: $portfolioId) {\n      holdingsCount\n      tradeDate\n      asOf\n      returnSinceTrade {\n        baselineDate\n        latestDate\n        returnPct\n        flowAdjusted\n      }\n    }\n  }\n": types.SummaryDocument,
     "\n  query Deployment($portfolioId: ID!) {\n    deploymentSummary(portfolioId: $portfolioId) {\n      accountsCount\n      clientsCount\n      asOf\n      aum {\n        value\n        source\n        reason\n      }\n      gainLoss {\n        horizon\n        value\n        pct\n        reason\n      }\n    }\n  }\n": types.DeploymentDocument,
+    "\n  query ExpectedReturn($portfolioId: ID!) {\n    portfolioExpectedReturn(portfolioId: $portfolioId) {\n      portfolioEr\n      coveredWeight\n      topContributors {\n        ticker\n        targetWeight\n        price\n        priceTarget\n        er\n        contribution\n      }\n      bottomContributors {\n        ticker\n        targetWeight\n        price\n        priceTarget\n        er\n        contribution\n      }\n      noTarget\n      stalePriceTargets {\n        count\n        tickers {\n          ticker\n          priceTargetDate\n          lastEarningsDate\n        }\n      }\n      asOf\n    }\n  }\n": types.ExpectedReturnDocument,
 };
 
 /**
@@ -37,6 +39,10 @@ export function graphql(source: "\n  query Summary($portfolioId: ID!) {\n    por
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(source: "\n  query Deployment($portfolioId: ID!) {\n    deploymentSummary(portfolioId: $portfolioId) {\n      accountsCount\n      clientsCount\n      asOf\n      aum {\n        value\n        source\n        reason\n      }\n      gainLoss {\n        horizon\n        value\n        pct\n        reason\n      }\n    }\n  }\n"): typeof import('./graphql').DeploymentDocument;
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n  query ExpectedReturn($portfolioId: ID!) {\n    portfolioExpectedReturn(portfolioId: $portfolioId) {\n      portfolioEr\n      coveredWeight\n      topContributors {\n        ticker\n        targetWeight\n        price\n        priceTarget\n        er\n        contribution\n      }\n      bottomContributors {\n        ticker\n        targetWeight\n        price\n        priceTarget\n        er\n        contribution\n      }\n      noTarget\n      stalePriceTargets {\n        count\n        tickers {\n          ticker\n          priceTargetDate\n          lastEarningsDate\n        }\n      }\n      asOf\n    }\n  }\n"): typeof import('./graphql').ExpectedReturnDocument;
 
 
 export function graphql(source: string) {

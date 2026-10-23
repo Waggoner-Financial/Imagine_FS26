@@ -1,10 +1,14 @@
 import { describe, expect, test } from 'bun:test';
 
 import {
+  formatCompactPercent,
   formatCount,
   formatDate,
   formatMoney,
   formatPercent,
+  formatPercentagePoints,
+  formatPrice,
+  formatSignedCompactPercent,
   formatSignedMoney,
   formatSignedPercent,
   MISSING,
@@ -17,6 +21,10 @@ describe('missing figures', () => {
     expect(formatMoney(null)).toBe(MISSING);
     expect(formatSignedMoney(null)).toBe(MISSING);
     expect(formatDate(null)).toBe(MISSING);
+    expect(formatCompactPercent(null)).toBe(MISSING);
+    expect(formatSignedCompactPercent(null)).toBe(MISSING);
+    expect(formatPercentagePoints(null)).toBe(MISSING);
+    expect(formatPrice(null)).toBe(MISSING);
   });
 });
 
@@ -56,5 +64,27 @@ describe('dates', () => {
 describe('counts', () => {
   test('group thousands', () => {
     expect(formatCount(1234)).toBe('1,234');
+  });
+});
+
+describe('compact portfolio figures', () => {
+  test('format target weights without unnecessary decimals', () => {
+    expect(formatCompactPercent(0.12)).toBe('12%');
+    expect(formatCompactPercent(0.125)).toBe('12.5%');
+  });
+
+  test('format holding expected return with one decimal and a sign', () => {
+    expect(formatSignedCompactPercent(0.2669)).toBe('+26.7%');
+    expect(formatSignedCompactPercent(-0.08)).toBe('-8.0%');
+  });
+
+  test('convert fractional contributions to percentage points', () => {
+    expect(formatPercentagePoints(0.032027)).toBe('3.20');
+    expect(formatPercentagePoints(-0.0104)).toBe('-1.04');
+  });
+
+  test('format security prices with two decimal places', () => {
+    expect(formatPrice(118.4)).toBe('$118.40');
+    expect(formatPrice(150)).toBe('$150.00');
   });
 });
