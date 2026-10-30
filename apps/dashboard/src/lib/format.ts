@@ -17,6 +17,23 @@ const signedPercent = new Intl.NumberFormat('en-US', {
   style: 'percent',
 });
 
+const compactPercent = new Intl.NumberFormat('en-US', {
+  maximumFractionDigits: 1,
+  style: 'percent',
+});
+
+const signedCompactPercent = new Intl.NumberFormat('en-US', {
+  maximumFractionDigits: 1,
+  minimumFractionDigits: 1,
+  signDisplay: 'exceptZero',
+  style: 'percent',
+});
+
+const percentagePoints = new Intl.NumberFormat('en-US', {
+  maximumFractionDigits: 2,
+  minimumFractionDigits: 2,
+});
+
 // Compact dollars with four significant digits: 184300000 -> "$184.3M".
 const money = new Intl.NumberFormat('en-US', {
   currency: 'USD',
@@ -30,6 +47,13 @@ const signedMoney = new Intl.NumberFormat('en-US', {
   maximumSignificantDigits: 4,
   notation: 'compact',
   signDisplay: 'exceptZero',
+  style: 'currency',
+});
+
+const price = new Intl.NumberFormat('en-US', {
+  currency: 'USD',
+  maximumFractionDigits: 2,
+  minimumFractionDigits: 2,
   style: 'currency',
 });
 
@@ -51,6 +75,32 @@ export function formatSignedPercent(
   fraction: number | null | undefined
 ): string {
   return fraction == null ? MISSING : signedPercent.format(fraction);
+}
+
+/** A compact weight, such as 0.12 -> "12%". */
+export function formatCompactPercent(
+  fraction: number | null | undefined
+): string {
+  return fraction == null ? MISSING : compactPercent.format(fraction);
+}
+
+/** A compact signed return, such as 0.267 -> "+26.7%". */
+export function formatSignedCompactPercent(
+  fraction: number | null | undefined
+): string {
+  return fraction == null ? MISSING : signedCompactPercent.format(fraction);
+}
+
+/** A fractional contribution expressed in percentage points. */
+export function formatPercentagePoints(
+  fraction: number | null | undefined
+): string {
+  return fraction == null ? MISSING : percentagePoints.format(fraction * 100);
+}
+
+/** A security price with two decimal places. */
+export function formatPrice(dollars: number | null | undefined): string {
+  return dollars == null ? MISSING : price.format(dollars);
 }
 
 export function formatMoney(dollars: number | null | undefined): string {
