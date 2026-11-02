@@ -47,6 +47,13 @@ export type DeploymentQueryVariables = Exact<{
 
 export type DeploymentQuery = { deploymentSummary: { accountsCount: number, clientsCount: number, asOf: string, aum: { value: number | null, source: AumSource, reason: string | null }, gainLoss: Array<{ horizon: DashboardHorizon, value: number | null, pct: number | null, reason: string | null }> } };
 
+export type MoversQueryVariables = Exact<{
+  portfolioId: string | number;
+}>;
+
+
+export type MoversQuery = { portfolioMovers: { tradeDate: string | null, baselineDate: string | null, asOf: string, reason: string | null, top: Array<{ ticker: string, name: string, returnSinceTrade: number, targetWeight: number, currentWeight: number, driftPp: number, contribution: number }>, bottom: Array<{ ticker: string, name: string, returnSinceTrade: number, targetWeight: number, currentWeight: number, driftPp: number, contribution: number }>, attribution: { portfolioReturn: number, topShare: number | null, bottomShare: number | null, reason: string | null } | null } };
+
 export class TypedDocumentString<TResult, TVariables>
   extends String
   implements DocumentTypeDecoration<TResult, TVariables>
@@ -110,3 +117,37 @@ export const DeploymentDocument = new TypedDocumentString(`
   }
 }
     `) as unknown as TypedDocumentString<DeploymentQuery, DeploymentQueryVariables>;
+export const MoversDocument = new TypedDocumentString(`
+    query Movers($portfolioId: ID!) {
+  portfolioMovers(portfolioId: $portfolioId, count: 3) {
+    tradeDate
+    baselineDate
+    asOf
+    reason
+    top {
+      ticker
+      name
+      returnSinceTrade
+      targetWeight
+      currentWeight
+      driftPp
+      contribution
+    }
+    bottom {
+      ticker
+      name
+      returnSinceTrade
+      targetWeight
+      currentWeight
+      driftPp
+      contribution
+    }
+    attribution {
+      portfolioReturn
+      topShare
+      bottomShare
+      reason
+    }
+  }
+}
+    `) as unknown as TypedDocumentString<MoversQuery, MoversQueryVariables>;

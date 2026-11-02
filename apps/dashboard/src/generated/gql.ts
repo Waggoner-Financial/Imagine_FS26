@@ -18,11 +18,13 @@ type Documents = {
     "\n  query Portfolios {\n    dashboardPortfolios {\n      id\n      code\n      name\n    }\n  }\n": typeof types.PortfoliosDocument,
     "\n  query Summary($portfolioId: ID!) {\n    portfolioDashboardSummary(portfolioId: $portfolioId) {\n      holdingsCount\n      tradeDate\n      asOf\n      returnSinceTrade {\n        baselineDate\n        latestDate\n        returnPct\n        flowAdjusted\n      }\n    }\n  }\n": typeof types.SummaryDocument,
     "\n  query Deployment($portfolioId: ID!) {\n    deploymentSummary(portfolioId: $portfolioId) {\n      accountsCount\n      clientsCount\n      asOf\n      aum {\n        value\n        source\n        reason\n      }\n      gainLoss {\n        horizon\n        value\n        pct\n        reason\n      }\n    }\n  }\n": typeof types.DeploymentDocument,
+    "\n  query Movers($portfolioId: ID!) {\n    portfolioMovers(portfolioId: $portfolioId, count: 3) {\n      tradeDate\n      baselineDate\n      asOf\n      reason\n      top {\n        ticker\n        name\n        returnSinceTrade\n        targetWeight\n        currentWeight\n        driftPp\n        contribution\n      }\n      bottom {\n        ticker\n        name\n        returnSinceTrade\n        targetWeight\n        currentWeight\n        driftPp\n        contribution\n      }\n      attribution {\n        portfolioReturn\n        topShare\n        bottomShare\n        reason\n      }\n    }\n  }\n": typeof types.MoversDocument,
 };
 const documents: Documents = {
     "\n  query Portfolios {\n    dashboardPortfolios {\n      id\n      code\n      name\n    }\n  }\n": types.PortfoliosDocument,
     "\n  query Summary($portfolioId: ID!) {\n    portfolioDashboardSummary(portfolioId: $portfolioId) {\n      holdingsCount\n      tradeDate\n      asOf\n      returnSinceTrade {\n        baselineDate\n        latestDate\n        returnPct\n        flowAdjusted\n      }\n    }\n  }\n": types.SummaryDocument,
     "\n  query Deployment($portfolioId: ID!) {\n    deploymentSummary(portfolioId: $portfolioId) {\n      accountsCount\n      clientsCount\n      asOf\n      aum {\n        value\n        source\n        reason\n      }\n      gainLoss {\n        horizon\n        value\n        pct\n        reason\n      }\n    }\n  }\n": types.DeploymentDocument,
+    "\n  query Movers($portfolioId: ID!) {\n    portfolioMovers(portfolioId: $portfolioId, count: 3) {\n      tradeDate\n      baselineDate\n      asOf\n      reason\n      top {\n        ticker\n        name\n        returnSinceTrade\n        targetWeight\n        currentWeight\n        driftPp\n        contribution\n      }\n      bottom {\n        ticker\n        name\n        returnSinceTrade\n        targetWeight\n        currentWeight\n        driftPp\n        contribution\n      }\n      attribution {\n        portfolioReturn\n        topShare\n        bottomShare\n        reason\n      }\n    }\n  }\n": types.MoversDocument,
 };
 
 /**
@@ -37,6 +39,10 @@ export function graphql(source: "\n  query Summary($portfolioId: ID!) {\n    por
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(source: "\n  query Deployment($portfolioId: ID!) {\n    deploymentSummary(portfolioId: $portfolioId) {\n      accountsCount\n      clientsCount\n      asOf\n      aum {\n        value\n        source\n        reason\n      }\n      gainLoss {\n        horizon\n        value\n        pct\n        reason\n      }\n    }\n  }\n"): typeof import('./graphql').DeploymentDocument;
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n  query Movers($portfolioId: ID!) {\n    portfolioMovers(portfolioId: $portfolioId, count: 3) {\n      tradeDate\n      baselineDate\n      asOf\n      reason\n      top {\n        ticker\n        name\n        returnSinceTrade\n        targetWeight\n        currentWeight\n        driftPp\n        contribution\n      }\n      bottom {\n        ticker\n        name\n        returnSinceTrade\n        targetWeight\n        currentWeight\n        driftPp\n        contribution\n      }\n      attribution {\n        portfolioReturn\n        topShare\n        bottomShare\n        reason\n      }\n    }\n  }\n"): typeof import('./graphql').MoversDocument;
 
 
 export function graphql(source: string) {
