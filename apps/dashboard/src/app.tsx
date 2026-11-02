@@ -9,6 +9,7 @@ import type { DashboardHorizon } from './generated/graphql';
 import { isHorizon } from './lib/horizons';
 import { usePersistedState } from './lib/use-persisted-state';
 import { DeploymentPanel } from './panels/deployment-panel';
+import { PriceActionPanel } from './panels/price-action-panel';
 
 // EQUITY is the default portfolio (spec §1).
 const DEFAULT_PORTFOLIO_ID = 'p-equity';
@@ -59,12 +60,7 @@ export function App(): ReactNode {
         </p>
       )}
       <main className="grid">
-        <PlaceholderPanel
-          title="Price Action"
-          section="§3.2"
-          query="portfolioPriceSeries"
-          horizon={horizon}
-        />
+        <PriceActionPanel portfolioId={portfolioId} horizon={horizon} />
         <PlaceholderPanel
           title="Portfolio 4P"
           section="§3.3"

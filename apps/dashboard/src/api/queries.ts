@@ -50,3 +50,23 @@ export const deploymentDocument = graphql(`
     }
   }
 `);
+
+export const priceSeriesDocument = graphql(`
+  query PriceSeries($portfolioId: ID!, $horizon: DashboardHorizon!) {
+    portfolioPriceSeries(portfolioId: $portfolioId, horizon: $horizon) {
+      horizon
+      windowStart
+      asOf
+      series {
+        id
+        label
+        kind
+        reason
+        points {
+          date
+          value
+        }
+      }
+    }
+  }
+`);
