@@ -9,6 +9,7 @@ import type { DashboardHorizon } from './generated/graphql';
 import { isHorizon } from './lib/horizons';
 import { usePersistedState } from './lib/use-persisted-state';
 import { DeploymentPanel } from './panels/deployment-panel';
+import { TreemapPanel } from './panels/treemap-panel';
 
 // EQUITY is the default portfolio (spec §1).
 const DEFAULT_PORTFOLIO_ID = 'p-equity';
@@ -86,12 +87,7 @@ export function App(): ReactNode {
           query="portfolioExpectedReturn"
         />
         <DeploymentPanel portfolioId={portfolioId} />
-        <PlaceholderPanel
-          title="Sector / Holdings"
-          section="§3.8"
-          query="portfolioSectorWeights"
-          horizon={horizon}
-        />
+        <TreemapPanel horizon={horizon} portfolioId={portfolioId} />
       </main>
     </div>
   );

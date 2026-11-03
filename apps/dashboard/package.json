@@ -5,6 +5,7 @@
   "type": "module",
   "dependencies": {
     "@tanstack/react-query": "catalog:",
+    "d3-hierarchy": "catalog:",
     "react": "catalog:",
     "react-dom": "catalog:"
   },
@@ -12,6 +13,7 @@
     "@graphql-codegen/cli": "catalog:",
     "@graphql-codegen/client-preset": "catalog:",
     "@graphql-typed-document-node/core": "catalog:",
+    "@types/d3-hierarchy": "catalog:",
     "@types/react": "catalog:",
     "@types/react-dom": "catalog:",
     "@vitejs/plugin-react": "catalog:",

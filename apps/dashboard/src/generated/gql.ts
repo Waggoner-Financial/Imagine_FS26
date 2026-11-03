@@ -18,11 +18,13 @@ type Documents = {
     "\n  query Portfolios {\n    dashboardPortfolios {\n      id\n      code\n      name\n    }\n  }\n": typeof types.PortfoliosDocument,
     "\n  query Summary($portfolioId: ID!) {\n    portfolioDashboardSummary(portfolioId: $portfolioId) {\n      holdingsCount\n      tradeDate\n      asOf\n      returnSinceTrade {\n        baselineDate\n        latestDate\n        returnPct\n        flowAdjusted\n      }\n    }\n  }\n": typeof types.SummaryDocument,
     "\n  query Deployment($portfolioId: ID!) {\n    deploymentSummary(portfolioId: $portfolioId) {\n      accountsCount\n      clientsCount\n      asOf\n      aum {\n        value\n        source\n        reason\n      }\n      gainLoss {\n        horizon\n        value\n        pct\n        reason\n      }\n    }\n  }\n": typeof types.DeploymentDocument,
+    "\n  query SectorWeights($portfolioId: ID!, $horizon: DashboardHorizon!) {\n    portfolioSectorWeights(portfolioId: $portfolioId, horizon: $horizon) {\n      horizon\n      benchmarkReturn\n      asOf\n      sectors {\n        name\n        weight\n        return\n        vsBenchmark\n        isCash\n        holdings\n      }\n      holdings {\n        ticker\n        name\n        sector\n        weight\n        return\n        isCash\n      }\n    }\n  }\n": typeof types.SectorWeightsDocument,
 };
 const documents: Documents = {
     "\n  query Portfolios {\n    dashboardPortfolios {\n      id\n      code\n      name\n    }\n  }\n": types.PortfoliosDocument,
     "\n  query Summary($portfolioId: ID!) {\n    portfolioDashboardSummary(portfolioId: $portfolioId) {\n      holdingsCount\n      tradeDate\n      asOf\n      returnSinceTrade {\n        baselineDate\n        latestDate\n        returnPct\n        flowAdjusted\n      }\n    }\n  }\n": types.SummaryDocument,
     "\n  query Deployment($portfolioId: ID!) {\n    deploymentSummary(portfolioId: $portfolioId) {\n      accountsCount\n      clientsCount\n      asOf\n      aum {\n        value\n        source\n        reason\n      }\n      gainLoss {\n        horizon\n        value\n        pct\n        reason\n      }\n    }\n  }\n": types.DeploymentDocument,
+    "\n  query SectorWeights($portfolioId: ID!, $horizon: DashboardHorizon!) {\n    portfolioSectorWeights(portfolioId: $portfolioId, horizon: $horizon) {\n      horizon\n      benchmarkReturn\n      asOf\n      sectors {\n        name\n        weight\n        return\n        vsBenchmark\n        isCash\n        holdings\n      }\n      holdings {\n        ticker\n        name\n        sector\n        weight\n        return\n        isCash\n      }\n    }\n  }\n": types.SectorWeightsDocument,
 };
 
 /**
@@ -37,6 +39,10 @@ export function graphql(source: "\n  query Summary($portfolioId: ID!) {\n    por
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(source: "\n  query Deployment($portfolioId: ID!) {\n    deploymentSummary(portfolioId: $portfolioId) {\n      accountsCount\n      clientsCount\n      asOf\n      aum {\n        value\n        source\n        reason\n      }\n      gainLoss {\n        horizon\n        value\n        pct\n        reason\n      }\n    }\n  }\n"): typeof import('./graphql').DeploymentDocument;
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n  query SectorWeights($portfolioId: ID!, $horizon: DashboardHorizon!) {\n    portfolioSectorWeights(portfolioId: $portfolioId, horizon: $horizon) {\n      horizon\n      benchmarkReturn\n      asOf\n      sectors {\n        name\n        weight\n        return\n        vsBenchmark\n        isCash\n        holdings\n      }\n      holdings {\n        ticker\n        name\n        sector\n        weight\n        return\n        isCash\n      }\n    }\n  }\n"): typeof import('./graphql').SectorWeightsDocument;
 
 
 export function graphql(source: string) {
