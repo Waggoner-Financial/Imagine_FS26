@@ -68,7 +68,7 @@ function ContributorRows({
       <td className={signClass(contributor.er)}>
         {formatSignedCompactPercent(contributor.er)}
       </td>
-      <td className="contribution-pp">
+      <td className="contributor-pp">
         {formatPercentagePoints(contributor.contribution)}
       </td>
     </tr>
@@ -84,6 +84,14 @@ function ContributorsTable({
   staleTickers: ReadonlySet<string>;
   topContributors: readonly Contributor[];
 }): ReactNode {
+  // Show each holding once, giving the top group priority
+  const topTickers = new Set(
+    topContributors.map((contributor) => contributor.ticker)
+  );
+  const uniqueBottomContributors = bottomContributors.filter(
+    (contributor) => !topTickers.has(contributor.ticker)
+  );
+
   return (
     <table className="rebalancer-table">
       <caption className="visually-hidden">
@@ -121,7 +129,7 @@ function ContributorsTable({
           </th>
         </tr>
         <ContributorRows
-          contributors={bottomContributors}
+          contributors={uniqueBottomContributors}
           staleTickers={staleTickers}
         />
       </tbody>
@@ -200,25 +208,24 @@ export function RebalancerPanel({
             bottomContributors={expectedReturn.bottomContributors}
             staleTickers={staleTickers}
           />
-          {showStaleTargets &&
-            staleTargets !== undefined &&
-            staleTargets.count > 0 && (
-              <section
-                id={staleTargetsId}
-                className="rebalancer-notice warning-notice"
-              >
-                <h3>Stale price targets</h3>
-                <ul>
-                  {staleTargets.tickers.map((target) => (
-                    <li key={target.ticker}>
-                      <strong>{target.ticker}</strong>: target set{' '}
-                      {formatDate(target.priceTargetDate)}; earnings reported{' '}
-                      {formatDate(target.lastEarningsDate)}
-                    </li>
-                  ))}
-                </ul>
-              </section>
-            )}
+          {staleTargets !== undefined && staleTargets.count > 0 && (
+            <section
+              id={staleTargetsId}
+              hidden={!showStaleTargets}
+              className="rebalancer-notice warning-notice"
+            >
+              <h3>Stale price targets</h3>
+              <ul>
+                {staleTargets.tickers.map((target) => (
+                  <li key={target.ticker}>
+                    <strong>{target.ticker}</strong>: target set{' '}
+                    {formatDate(target.priceTargetDate)}; earnings reported{' '}
+                    {formatDate(target.lastEarningsDate)}
+                  </li>
+                ))}
+              </ul>
+            </section>
+          )}
 
           {expectedReturn.noTarget.length > 0 && (
             <section className="rebalancer-notice">
@@ -226,6 +233,10 @@ export function RebalancerPanel({
               <p>{expectedReturn.noTarget.join(', ')}</p>
             </section>
           )}
+          <p className="rebalancer-caption">
+            Based on the latest close and current price targets; not annualized.
+            Unaffected by the global time range.
+          </p>
         </div>
       )}
     </Card>

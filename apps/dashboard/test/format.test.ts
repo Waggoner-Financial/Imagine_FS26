@@ -78,9 +78,10 @@ describe('compact portfolio figures', () => {
     expect(formatSignedCompactPercent(-0.08)).toBe('-8.0%');
   });
 
-  test('convert fractional contributions to percentage points', () => {
-    expect(formatPercentagePoints(0.032027)).toBe('3.20');
+  test('convert fractional contributions to signed percentage points', () => {
+    expect(formatPercentagePoints(0.032027)).toBe('+3.20');
     expect(formatPercentagePoints(-0.0104)).toBe('-1.04');
+    expect(formatPercentagePoints(0)).toBe('0.00');
   });
 
   test('format security prices with two decimal places', () => {

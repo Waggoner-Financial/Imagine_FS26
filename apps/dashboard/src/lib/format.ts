@@ -32,6 +32,7 @@ const signedCompactPercent = new Intl.NumberFormat('en-US', {
 const percentagePoints = new Intl.NumberFormat('en-US', {
   maximumFractionDigits: 2,
   minimumFractionDigits: 2,
+  signDisplay: 'exceptZero',
 });
 
 // Compact dollars with four significant digits: 184300000 -> "$184.3M".

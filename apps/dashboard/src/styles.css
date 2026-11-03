@@ -259,6 +259,12 @@ body {
   outline-offset: 2px;
 }
 
+.rebalancer-caption {
+  margin: 12px 0 0;
+  color: var(--muted);
+  font-size: 0.75rem;
+}
+
 .rebalancer-summary {
   padding-bottom: 12px;
   margin: 0;
