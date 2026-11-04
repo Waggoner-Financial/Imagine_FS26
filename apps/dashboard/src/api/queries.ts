@@ -85,3 +85,106 @@ export const expectedReturnDocument = graphql(`
     }
   }
 `);
+
+export const fourPriceDocument = graphql(`
+  query FourPrice($portfolioId: ID!) {
+    portfolioFourPrice(portfolioId: $portfolioId) {
+      asOf
+      byTargetWeight {
+        ...FourPriceSetFields
+      }
+      byWeightedEr {
+        ...FourPriceSetFields
+      }
+      vsSp500 {
+        ...FourPriceRankingFields
+      }
+      vsIndex {
+        ...FourPriceRankingFields
+      }
+    }
+  }
+
+  fragment FourPriceValueFields on FourPriceValue {
+    multiple
+    coverageWeight
+    coveredHoldings
+    totalHoldings
+    reason
+  }
+
+  fragment FourPriceSetFields on FourPriceSet {
+    rev {
+      ...FourPriceValueFields
+    }
+    fcf {
+      ...FourPriceValueFields
+    }
+    ern {
+      ...FourPriceValueFields
+    }
+    div {
+      ...FourPriceValueFields
+    }
+  }
+
+  fragment RankStatFields on RankStat {
+    percentile
+    zScore
+    universeMean
+    universeStdDev
+    reason
+  }
+
+  fragment FourPriceRankingFields on FourPriceRanking {
+    universe
+    constituents
+    rev {
+      ...RankStatFields
+    }
+    fcf {
+      ...RankStatFields
+    }
+    ern {
+      ...RankStatFields
+    }
+    div {
+      ...RankStatFields
+    }
+  }
+`);
+
+export const moversDocument = graphql(`
+  query Movers($portfolioId: ID!) {
+    portfolioMovers(portfolioId: $portfolioId, count: 3) {
+      tradeDate
+      baselineDate
+      asOf
+      reason
+      top {
+        ticker
+        name
+        returnSinceTrade
+        targetWeight
+        currentWeight
+        driftPp
+        contribution
+      }
+      bottom {
+        ticker
+        name
+        returnSinceTrade
+        targetWeight
+        currentWeight
+        driftPp
+        contribution
+      }
+      attribution {
+        portfolioReturn
+        topShare
+        bottomShare
+        reason
+      }
+    }
+  }
+`);
