@@ -12,6 +12,7 @@ import { DeploymentPanel } from './panels/deployment-panel';
 import { DriftPanel } from './panels/drift-panel';
 import { FourPricePanel } from './panels/four-price-panel';
 import { TreemapPanel } from './panels/treemap-panel';
+import { RebalancerPanel } from './panels/rebalancer-panel';
 
 // EQUITY is the default portfolio (spec §1).
 const DEFAULT_PORTFOLIO_ID = 'p-equity';
@@ -75,11 +76,7 @@ export function App(): ReactNode {
           query="portfolioRisk"
         />
         <DriftPanel portfolioId={portfolioId} />
-        <PlaceholderPanel
-          title="Rebalancer"
-          section="§3.6"
-          query="portfolioExpectedReturn"
-        />
+        <RebalancerPanel key={portfolioId} portfolioId={portfolioId} />
         <DeploymentPanel portfolioId={portfolioId} />
         <TreemapPanel horizon={horizon} portfolioId={portfolioId} />
       </main>

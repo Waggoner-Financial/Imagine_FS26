@@ -54,6 +54,12 @@ export type SectorWeightsQueryVariables = Exact<{
 
 
 export type SectorWeightsQuery = { portfolioSectorWeights: { horizon: DashboardHorizon, benchmarkReturn: number, asOf: string, sectors: Array<{ name: string, weight: number, return: number | null, vsBenchmark: number | null, isCash: boolean, holdings: Array<string> }>, holdings: Array<{ ticker: string, name: string, sector: string, weight: number, return: number | null, isCash: boolean }> } };
+export type ExpectedReturnQueryVariables = Exact<{
+  portfolioId: string | number;
+}>;
+
+
+export type ExpectedReturnQuery = { portfolioExpectedReturn: { portfolioEr: number, coveredWeight: number, noTarget: Array<string>, asOf: string, topContributors: Array<{ ticker: string, targetWeight: number, price: number, priceTarget: number, er: number, contribution: number }>, bottomContributors: Array<{ ticker: string, targetWeight: number, price: number, priceTarget: number, er: number, contribution: number }>, stalePriceTargets: { count: number, tickers: Array<{ ticker: string, priceTargetDate: string, lastEarningsDate: string }> } } };
 
 export type FourPriceQueryVariables = Exact<{
   portfolioId: string | number;
@@ -228,6 +234,40 @@ export const SectorWeightsDocument = new TypedDocumentString(`
   }
 }
     `) as unknown as TypedDocumentString<SectorWeightsQuery, SectorWeightsQueryVariables>;
+export const ExpectedReturnDocument = new TypedDocumentString(`
+    query ExpectedReturn($portfolioId: ID!) {
+  portfolioExpectedReturn(portfolioId: $portfolioId) {
+    portfolioEr
+    coveredWeight
+    topContributors {
+      ticker
+      targetWeight
+      price
+      priceTarget
+      er
+      contribution
+    }
+    bottomContributors {
+      ticker
+      targetWeight
+      price
+      priceTarget
+      er
+      contribution
+    }
+    noTarget
+    stalePriceTargets {
+      count
+      tickers {
+        ticker
+        priceTargetDate
+        lastEarningsDate
+      }
+    }
+    asOf
+  }
+}
+    `) as unknown as TypedDocumentString<ExpectedReturnQuery, ExpectedReturnQueryVariables>;
 export const FourPriceDocument = new TypedDocumentString(`
     query FourPrice($portfolioId: ID!) {
   portfolioFourPrice(portfolioId: $portfolioId) {

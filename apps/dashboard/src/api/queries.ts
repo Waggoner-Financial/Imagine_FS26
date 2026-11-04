@@ -76,6 +76,41 @@ export const sectorWeightsDocument = graphql(`
     }
   }
 `);
+export const expectedReturnDocument = graphql(`
+  query ExpectedReturn($portfolioId: ID!) {
+    portfolioExpectedReturn(portfolioId: $portfolioId) {
+      portfolioEr
+      coveredWeight
+      topContributors {
+        ticker
+        targetWeight
+        price
+        priceTarget
+        er
+        contribution
+      }
+      bottomContributors {
+        ticker
+        targetWeight
+        price
+        priceTarget
+        er
+        contribution
+      }
+      noTarget
+      stalePriceTargets {
+        count
+        tickers {
+          ticker
+          priceTargetDate
+          lastEarningsDate
+        }
+      }
+      asOf
+    }
+  }
+`);
+
 export const fourPriceDocument = graphql(`
   query FourPrice($portfolioId: ID!) {
     portfolioFourPrice(portfolioId: $portfolioId) {
