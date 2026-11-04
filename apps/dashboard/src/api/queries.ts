@@ -72,6 +72,10 @@ export const sectorWeightsDocument = graphql(`
         weight
         return
         isCash
+      }
+    }
+  }
+`);
 export const fourPriceDocument = graphql(`
   query FourPrice($portfolioId: ID!) {
     portfolioFourPrice(portfolioId: $portfolioId) {

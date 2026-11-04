@@ -334,6 +334,15 @@ body {
 
 .treemap-back {
   margin-bottom: 8px;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
 /* Portfolio 4P (spec §3.3) */
 .four-price-table {
   width: 100%;
