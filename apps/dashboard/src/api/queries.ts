@@ -118,3 +118,38 @@ export const fourPriceDocument = graphql(`
     }
   }
 `);
+
+export const moversDocument = graphql(`
+  query Movers($portfolioId: ID!) {
+    portfolioMovers(portfolioId: $portfolioId, count: 3) {
+      tradeDate
+      baselineDate
+      asOf
+      reason
+      top {
+        ticker
+        name
+        returnSinceTrade
+        targetWeight
+        currentWeight
+        driftPp
+        contribution
+      }
+      bottom {
+        ticker
+        name
+        returnSinceTrade
+        targetWeight
+        currentWeight
+        driftPp
+        contribution
+      }
+      attribution {
+        portfolioReturn
+        topShare
+        bottomShare
+        reason
+      }
+    }
+  }
+`);

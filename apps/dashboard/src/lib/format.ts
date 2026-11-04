@@ -110,3 +110,21 @@ export function formatPercentile(fraction: number | null | undefined): string {
 export function formatZScore(value: number | null | undefined): string {
   return value == null ? MISSING : zScore.format(value);
 }
+
+const driftPp = new Intl.NumberFormat('en-US', {
+  maximumFractionDigits: 1,
+  minimumFractionDigits: 1,
+  signDisplay: 'exceptZero',
+});
+
+export function formatDriftPp(value: number | null | undefined): string {
+  return value == null ? MISSING : `${driftPp.format(value)} pp`;
+}
+
+/** An attribution share with its sign, or the API's reason in its place. */
+export function formatShare(
+  share: number | null | undefined,
+  reason: string | null | undefined
+): string {
+  return share == null ? (reason ?? MISSING) : formatSignedPercent(share);
+}

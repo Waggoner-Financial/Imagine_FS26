@@ -62,6 +62,13 @@ export type RankStatFieldsFragment = { percentile: number | null, zScore: number
 
 export type FourPriceRankingFieldsFragment = { universe: string, constituents: number, rev: { percentile: number | null, zScore: number | null, universeMean: number | null, universeStdDev: number | null, reason: string | null }, fcf: { percentile: number | null, zScore: number | null, universeMean: number | null, universeStdDev: number | null, reason: string | null }, ern: { percentile: number | null, zScore: number | null, universeMean: number | null, universeStdDev: number | null, reason: string | null }, div: { percentile: number | null, zScore: number | null, universeMean: number | null, universeStdDev: number | null, reason: string | null } };
 
+export type MoversQueryVariables = Exact<{
+  portfolioId: string | number;
+}>;
+
+
+export type MoversQuery = { portfolioMovers: { tradeDate: string | null, baselineDate: string | null, asOf: string, reason: string | null, top: Array<{ ticker: string, name: string, returnSinceTrade: number, targetWeight: number, currentWeight: number, driftPp: number, contribution: number }>, bottom: Array<{ ticker: string, name: string, returnSinceTrade: number, targetWeight: number, currentWeight: number, driftPp: number, contribution: number }>, attribution: { portfolioReturn: number, topShare: number | null, bottomShare: number | null, reason: string | null } | null } };
+
 export class TypedDocumentString<TResult, TVariables>
   extends String
   implements DocumentTypeDecoration<TResult, TVariables>
@@ -250,3 +257,37 @@ fragment FourPriceRankingFields on FourPriceRanking {
     ...RankStatFields
   }
 }`) as unknown as TypedDocumentString<FourPriceQuery, FourPriceQueryVariables>;
+export const MoversDocument = new TypedDocumentString(`
+    query Movers($portfolioId: ID!) {
+  portfolioMovers(portfolioId: $portfolioId, count: 3) {
+    tradeDate
+    baselineDate
+    asOf
+    reason
+    top {
+      ticker
+      name
+      returnSinceTrade
+      targetWeight
+      currentWeight
+      driftPp
+      contribution
+    }
+    bottom {
+      ticker
+      name
+      returnSinceTrade
+      targetWeight
+      currentWeight
+      driftPp
+      contribution
+    }
+    attribution {
+      portfolioReturn
+      topShare
+      bottomShare
+      reason
+    }
+  }
+}
+    `) as unknown as TypedDocumentString<MoversQuery, MoversQueryVariables>;
