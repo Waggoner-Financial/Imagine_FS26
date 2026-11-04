@@ -54,6 +54,7 @@ export type SectorWeightsQueryVariables = Exact<{
 
 
 export type SectorWeightsQuery = { portfolioSectorWeights: { horizon: DashboardHorizon, benchmarkReturn: number, asOf: string, sectors: Array<{ name: string, weight: number, return: number | null, vsBenchmark: number | null, isCash: boolean, holdings: Array<string> }>, holdings: Array<{ ticker: string, name: string, sector: string, weight: number, return: number | null, isCash: boolean }> } };
+
 export type FourPriceQueryVariables = Exact<{
   portfolioId: string | number;
 }>;
