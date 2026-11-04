@@ -3,8 +3,10 @@ import { describe, expect, test } from 'bun:test';
 import {
   formatCount,
   formatDate,
+  formatDriftPp,
   formatMoney,
   formatPercent,
+  formatShare,
   formatSignedMoney,
   formatSignedPercent,
   MISSING,
@@ -56,5 +58,30 @@ describe('dates', () => {
 describe('counts', () => {
   test('group thousands', () => {
     expect(formatCount(1234)).toBe('1,234');
+  });
+});
+
+describe('drift', () => {
+  test('formats percentage points with an explicit sign', () => {
+    expect(formatDriftPp(0.7)).toBe('+0.7 pp');
+    expect(formatDriftPp(-0.3)).toBe('-0.3 pp');
+  });
+
+  test('renders a missing drift as an em dash', () => {
+    expect(formatDriftPp(null)).toBe(MISSING);
+  });
+});
+
+describe('attribution shares', () => {
+  test('format as signed percentages', () => {
+    expect(formatShare(0.8553784860557769, null)).toBe('+85.54%');
+    expect(formatShare(-0.36254980079681276, null)).toBe('-36.25%');
+  });
+
+  test('show the reason in place of a missing share', () => {
+    expect(formatShare(null, 'n/a (portfolio flat)')).toBe(
+      'n/a (portfolio flat)'
+    );
+    expect(formatShare(null, null)).toBe(MISSING);
   });
 });

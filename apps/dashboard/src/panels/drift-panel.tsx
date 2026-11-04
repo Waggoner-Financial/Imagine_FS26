@@ -8,32 +8,16 @@ import { Stat } from '../components/stat';
 import type { MoversQuery } from '../generated/graphql';
 import {
   formatDate,
+  formatDriftPp,
   formatPercent,
+  formatShare,
   formatSignedPercent,
-  MISSING,
 } from '../lib/format';
 
 type Movers = MoversQuery['portfolioMovers'];
 type Mover = Movers['top'][number];
 
-// Drift arrives in percentage points, not as a fraction: 0.7 -> "+0.7 pp".
-const driftFormat = new Intl.NumberFormat('en-US', {
-  maximumFractionDigits: 1,
-  minimumFractionDigits: 1,
-  signDisplay: 'exceptZero',
-});
-
-function formatDriftPp(value: number | null | undefined): string {
-  return value == null ? MISSING : `${driftFormat.format(value)} pp`;
-}
-
-function shareText(
-  share: number | null | undefined,
-  reason: string | null | undefined
-): string {
-  return share == null ? (reason ?? MISSING) : formatSignedPercent(share);
-}
-
+// One group of movers: ticker, return since trade, weight and drift.
 function MoverTable({
   caption,
   movers,
@@ -70,6 +54,7 @@ function MoverTable({
   );
 }
 
+// Shows the API's reason alone when there is no trade date.
 function DriftBody({ movers }: { movers: Movers }): ReactNode {
   if (movers.reason != null) {
     return <p>{movers.reason}</p>;
@@ -84,11 +69,11 @@ function DriftBody({ movers }: { movers: Movers }): ReactNode {
       <dl className="stats">
         <Stat
           label="Top 3 explain"
-          value={shareText(attribution?.topShare, attribution?.reason)}
+          value={formatShare(attribution?.topShare, attribution?.reason)}
         />
         <Stat
           label="Bottom 3 explain"
-          value={shareText(attribution?.bottomShare, attribution?.reason)}
+          value={formatShare(attribution?.bottomShare, attribution?.reason)}
         />
       </dl>
     </>
