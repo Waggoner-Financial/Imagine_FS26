@@ -9,9 +9,9 @@ import type { DashboardHorizon } from './generated/graphql';
 import { isHorizon } from './lib/horizons';
 import { usePersistedState } from './lib/use-persisted-state';
 import { DeploymentPanel } from './panels/deployment-panel';
-import { TreemapPanel } from './panels/treemap-panel';
 import { DriftPanel } from './panels/drift-panel';
 import { FourPricePanel } from './panels/four-price-panel';
+import { TreemapPanel } from './panels/treemap-panel';
 
 // EQUITY is the default portfolio (spec §1).
 const DEFAULT_PORTFOLIO_ID = 'p-equity';
