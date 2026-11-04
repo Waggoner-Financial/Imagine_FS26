@@ -16,6 +16,9 @@
   --warning: #8a4b08;
   --warning-bg: #fff4d6;
 
+  --tile-neutral: #e9ecf0;
+  --tile-ink: #1b1f24;
+
   color: var(--text);
   font-family:
     system-ui,
@@ -461,6 +464,124 @@ body {
   clip-path: inset(50%);
 }
 
+/* Treemap panel */
+.treemap {
+  position: relative;
+  min-height: 320px;
+  overflow: hidden;
+}
+
+.treemap-tile {
+  position: absolute;
+  padding: 0;
+  overflow: hidden;
+  border: 0;
+  border-radius: 4px;
+  color: var(--tile-ink);
+  font: inherit;
+  text-align: left;
+  text-decoration: none;
+  cursor: pointer;
+  container-type: size;
+}
+
+.treemap-label {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  justify-content: flex-end;
+  padding: 6px 8px;
+  overflow: hidden;
+}
+
+.treemap-name {
+  font-size: clamp(9px, 9cqw, 13px);
+  font-weight: 600;
+  line-height: 1.2;
+  overflow-wrap: normal;
+}
+
+.treemap-return {
+  font-size: 0.75rem;
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+  line-height: 1.25;
+  white-space: nowrap;
+}
+
+@container (width < 56px) and (height >= 90px) {
+  .treemap-label {
+    flex-direction: row;
+    gap: 6px;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 8px 0;
+    writing-mode: vertical-rl;
+    transform: rotate(180deg);
+  }
+
+  .treemap-name {
+    font-size: 12px;
+    white-space: nowrap;
+  }
+}
+
+@container (height < 48px) and (width >= 56px) {
+  .treemap-label {
+    flex-direction: row;
+    gap: 6px;
+    align-items: flex-end;
+    justify-content: flex-start;
+    padding: 4px 8px;
+  }
+
+  .treemap-name {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}
+
+@container (width < 56px) and (height < 90px) {
+  .treemap-name {
+    display: none;
+  }
+}
+
+@container ((width < 40px) and (height < 90px)) or (height < 20px) {
+  .treemap-return {
+    display: none;
+  }
+}
+
+.treemap-tile[role='img'] {
+  cursor: default;
+}
+
+.treemap-tile:focus-visible {
+  outline: 2px solid currentcolor;
+  outline-offset: -2px;
+}
+
+@container (height < 52px) {
+  .treemap-name {
+    display: none;
+  }
+}
+
+.treemap-back {
+  margin-bottom: 8px;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
 /* Portfolio 4P (spec §3.3) */
 .four-price-table {
   width: 100%;
@@ -500,7 +621,50 @@ body {
   border: 0;
   color: inherit;
   font: inherit;
-  text-decoration: underline dotted;
+  text-decoration: underline;
+  background: none;
+  cursor: pointer;
+}
+
+.treemap-detail {
+  display: flex;
+  flex-wrap: wrap;
+  row-gap: 6px;
+  align-items: baseline;
+  min-height: 2.5em;
+  margin: 12px 0 0;
+  padding: 8px 12px;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  background: color-mix(in srgb, var(--text) 6%, transparent);
+}
+
+.treemap-detail-title {
+  margin-right: 12px;
+  font-weight: 600;
+}
+
+.treemap-detail-item {
+  padding: 0 12px;
+  border-left: 1px solid var(--border);
+  white-space: nowrap;
+}
+
+.treemap-detail-label {
+  margin-right: 6px;
+  color: var(--muted);
+}
+
+.treemap-detail-value {
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+.treemap-detail-hint {
+  color: var(--muted);
+}
+
+.treemap-caption {
   background: none;
   cursor: help;
 }

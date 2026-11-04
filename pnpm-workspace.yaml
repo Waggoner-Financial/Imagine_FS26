@@ -67,6 +67,8 @@ catalog:
   'tsdown': '0.22.3'
   'typescript': '6.0.3'
   'vite': '8.3.0'
+  'd3-hierarchy': '3.1.2'
+  '@types/d3-hierarchy': 3.1.7
 
 overrides:
   '@rolldown/binding-wasm32-wasi>@napi-rs/wasm-runtime': '1.1.5'

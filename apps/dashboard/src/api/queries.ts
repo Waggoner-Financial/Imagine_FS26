@@ -51,6 +51,31 @@ export const deploymentDocument = graphql(`
   }
 `);
 
+export const sectorWeightsDocument = graphql(`
+  query SectorWeights($portfolioId: ID!, $horizon: DashboardHorizon!) {
+    portfolioSectorWeights(portfolioId: $portfolioId, horizon: $horizon) {
+      horizon
+      benchmarkReturn
+      asOf
+      sectors {
+        name
+        weight
+        return
+        vsBenchmark
+        isCash
+        holdings
+      }
+      holdings {
+        ticker
+        name
+        sector
+        weight
+        return
+        isCash
+      }
+    }
+  }
+`);
 export const expectedReturnDocument = graphql(`
   query ExpectedReturn($portfolioId: ID!) {
     portfolioExpectedReturn(portfolioId: $portfolioId) {
