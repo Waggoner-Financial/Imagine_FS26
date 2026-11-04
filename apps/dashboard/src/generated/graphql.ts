@@ -47,6 +47,21 @@ export type DeploymentQueryVariables = Exact<{
 
 export type DeploymentQuery = { deploymentSummary: { accountsCount: number, clientsCount: number, asOf: string, aum: { value: number | null, source: AumSource, reason: string | null }, gainLoss: Array<{ horizon: DashboardHorizon, value: number | null, pct: number | null, reason: string | null }> } };
 
+export type FourPriceQueryVariables = Exact<{
+  portfolioId: string | number;
+}>;
+
+
+export type FourPriceQuery = { portfolioFourPrice: { asOf: string, byTargetWeight: { rev: { multiple: number | null, coverageWeight: number, coveredHoldings: number, totalHoldings: number, reason: string | null }, fcf: { multiple: number | null, coverageWeight: number, coveredHoldings: number, totalHoldings: number, reason: string | null }, ern: { multiple: number | null, coverageWeight: number, coveredHoldings: number, totalHoldings: number, reason: string | null }, div: { multiple: number | null, coverageWeight: number, coveredHoldings: number, totalHoldings: number, reason: string | null } }, byWeightedEr: { rev: { multiple: number | null, coverageWeight: number, coveredHoldings: number, totalHoldings: number, reason: string | null }, fcf: { multiple: number | null, coverageWeight: number, coveredHoldings: number, totalHoldings: number, reason: string | null }, ern: { multiple: number | null, coverageWeight: number, coveredHoldings: number, totalHoldings: number, reason: string | null }, div: { multiple: number | null, coverageWeight: number, coveredHoldings: number, totalHoldings: number, reason: string | null } }, vsSp500: { universe: string, constituents: number, rev: { percentile: number | null, zScore: number | null, universeMean: number | null, universeStdDev: number | null, reason: string | null }, fcf: { percentile: number | null, zScore: number | null, universeMean: number | null, universeStdDev: number | null, reason: string | null }, ern: { percentile: number | null, zScore: number | null, universeMean: number | null, universeStdDev: number | null, reason: string | null }, div: { percentile: number | null, zScore: number | null, universeMean: number | null, universeStdDev: number | null, reason: string | null } }, vsIndex: { universe: string, constituents: number, rev: { percentile: number | null, zScore: number | null, universeMean: number | null, universeStdDev: number | null, reason: string | null }, fcf: { percentile: number | null, zScore: number | null, universeMean: number | null, universeStdDev: number | null, reason: string | null }, ern: { percentile: number | null, zScore: number | null, universeMean: number | null, universeStdDev: number | null, reason: string | null }, div: { percentile: number | null, zScore: number | null, universeMean: number | null, universeStdDev: number | null, reason: string | null } } } };
+
+export type FourPriceValueFieldsFragment = { multiple: number | null, coverageWeight: number, coveredHoldings: number, totalHoldings: number, reason: string | null };
+
+export type FourPriceSetFieldsFragment = { rev: { multiple: number | null, coverageWeight: number, coveredHoldings: number, totalHoldings: number, reason: string | null }, fcf: { multiple: number | null, coverageWeight: number, coveredHoldings: number, totalHoldings: number, reason: string | null }, ern: { multiple: number | null, coverageWeight: number, coveredHoldings: number, totalHoldings: number, reason: string | null }, div: { multiple: number | null, coverageWeight: number, coveredHoldings: number, totalHoldings: number, reason: string | null } };
+
+export type RankStatFieldsFragment = { percentile: number | null, zScore: number | null, universeMean: number | null, universeStdDev: number | null, reason: string | null };
+
+export type FourPriceRankingFieldsFragment = { universe: string, constituents: number, rev: { percentile: number | null, zScore: number | null, universeMean: number | null, universeStdDev: number | null, reason: string | null }, fcf: { percentile: number | null, zScore: number | null, universeMean: number | null, universeStdDev: number | null, reason: string | null }, ern: { percentile: number | null, zScore: number | null, universeMean: number | null, universeStdDev: number | null, reason: string | null }, div: { percentile: number | null, zScore: number | null, universeMean: number | null, universeStdDev: number | null, reason: string | null } };
+
 export type MoversQueryVariables = Exact<{
   portfolioId: string | number;
 }>;
@@ -72,7 +87,70 @@ export class TypedDocumentString<TResult, TVariables>
     return this.value;
   }
 }
-
+export const FourPriceValueFieldsFragmentDoc = new TypedDocumentString(`
+    fragment FourPriceValueFields on FourPriceValue {
+  multiple
+  coverageWeight
+  coveredHoldings
+  totalHoldings
+  reason
+}
+    `, {"fragmentName":"FourPriceValueFields"}) as unknown as TypedDocumentString<FourPriceValueFieldsFragment, unknown>;
+export const FourPriceSetFieldsFragmentDoc = new TypedDocumentString(`
+    fragment FourPriceSetFields on FourPriceSet {
+  rev {
+    ...FourPriceValueFields
+  }
+  fcf {
+    ...FourPriceValueFields
+  }
+  ern {
+    ...FourPriceValueFields
+  }
+  div {
+    ...FourPriceValueFields
+  }
+}
+    fragment FourPriceValueFields on FourPriceValue {
+  multiple
+  coverageWeight
+  coveredHoldings
+  totalHoldings
+  reason
+}`, {"fragmentName":"FourPriceSetFields"}) as unknown as TypedDocumentString<FourPriceSetFieldsFragment, unknown>;
+export const RankStatFieldsFragmentDoc = new TypedDocumentString(`
+    fragment RankStatFields on RankStat {
+  percentile
+  zScore
+  universeMean
+  universeStdDev
+  reason
+}
+    `, {"fragmentName":"RankStatFields"}) as unknown as TypedDocumentString<RankStatFieldsFragment, unknown>;
+export const FourPriceRankingFieldsFragmentDoc = new TypedDocumentString(`
+    fragment FourPriceRankingFields on FourPriceRanking {
+  universe
+  constituents
+  rev {
+    ...RankStatFields
+  }
+  fcf {
+    ...RankStatFields
+  }
+  ern {
+    ...RankStatFields
+  }
+  div {
+    ...RankStatFields
+  }
+}
+    fragment RankStatFields on RankStat {
+  percentile
+  zScore
+  universeMean
+  universeStdDev
+  reason
+}`, {"fragmentName":"FourPriceRankingFields"}) as unknown as TypedDocumentString<FourPriceRankingFieldsFragment, unknown>;
 export const PortfoliosDocument = new TypedDocumentString(`
     query Portfolios {
   dashboardPortfolios {
@@ -117,6 +195,68 @@ export const DeploymentDocument = new TypedDocumentString(`
   }
 }
     `) as unknown as TypedDocumentString<DeploymentQuery, DeploymentQueryVariables>;
+export const FourPriceDocument = new TypedDocumentString(`
+    query FourPrice($portfolioId: ID!) {
+  portfolioFourPrice(portfolioId: $portfolioId) {
+    asOf
+    byTargetWeight {
+      ...FourPriceSetFields
+    }
+    byWeightedEr {
+      ...FourPriceSetFields
+    }
+    vsSp500 {
+      ...FourPriceRankingFields
+    }
+    vsIndex {
+      ...FourPriceRankingFields
+    }
+  }
+}
+    fragment FourPriceValueFields on FourPriceValue {
+  multiple
+  coverageWeight
+  coveredHoldings
+  totalHoldings
+  reason
+}
+fragment FourPriceSetFields on FourPriceSet {
+  rev {
+    ...FourPriceValueFields
+  }
+  fcf {
+    ...FourPriceValueFields
+  }
+  ern {
+    ...FourPriceValueFields
+  }
+  div {
+    ...FourPriceValueFields
+  }
+}
+fragment RankStatFields on RankStat {
+  percentile
+  zScore
+  universeMean
+  universeStdDev
+  reason
+}
+fragment FourPriceRankingFields on FourPriceRanking {
+  universe
+  constituents
+  rev {
+    ...RankStatFields
+  }
+  fcf {
+    ...RankStatFields
+  }
+  ern {
+    ...RankStatFields
+  }
+  div {
+    ...RankStatFields
+  }
+}`) as unknown as TypedDocumentString<FourPriceQuery, FourPriceQueryVariables>;
 export const MoversDocument = new TypedDocumentString(`
     query Movers($portfolioId: ID!) {
   portfolioMovers(portfolioId: $portfolioId, count: 3) {

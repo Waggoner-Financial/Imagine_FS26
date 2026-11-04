@@ -72,6 +72,45 @@ export function formatDate(isoDate: string | null | undefined): string {
   return date.format(new Date(`${isoDate}T00:00:00Z`));
 }
 
+const multiple = new Intl.NumberFormat('en-US', {
+  maximumFractionDigits: 1,
+  minimumFractionDigits: 1,
+});
+
+const zScore = new Intl.NumberFormat('en-US', {
+  maximumFractionDigits: 1,
+  minimumFractionDigits: 1,
+  signDisplay: 'exceptZero',
+});
+
+const ordinal = new Intl.PluralRules('en-US', { type: 'ordinal' });
+
+const ORDINAL_SUFFIXES: Record<Intl.LDMLPluralRule, string> = {
+  few: 'rd',
+  many: 'th',
+  one: 'st',
+  other: 'th',
+  two: 'nd',
+  zero: 'th',
+};
+
+/** A valuation multiple, such as 6.8 -> "6.8×". */
+export function formatMultiple(value: number | null | undefined): string {
+  return value == null ? MISSING : `${multiple.format(value)}×`;
+}
+
+/** A percentile given as a fraction, such as 0.82 -> "82nd". */
+export function formatPercentile(fraction: number | null | undefined): string {
+  if (fraction == null) return MISSING;
+  const rank = Math.round(fraction * 100);
+  return `${rank}${ORDINAL_SUFFIXES[ordinal.select(rank)]}`;
+}
+
+/** A z-score with an explicit sign, such as 1.1 -> "+1.1". */
+export function formatZScore(value: number | null | undefined): string {
+  return value == null ? MISSING : zScore.format(value);
+}
+
 const driftPp = new Intl.NumberFormat('en-US', {
   maximumFractionDigits: 1,
   minimumFractionDigits: 1,
