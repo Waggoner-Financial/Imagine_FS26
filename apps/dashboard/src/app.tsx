@@ -11,6 +11,7 @@ import { usePersistedState } from './lib/use-persisted-state';
 import { DeploymentPanel } from './panels/deployment-panel';
 import { DriftPanel } from './panels/drift-panel';
 import { FourPricePanel } from './panels/four-price-panel';
+import { PriceActionPanel } from './panels/price-action-panel';
 import { RebalancerPanel } from './panels/rebalancer-panel';
 import { TreemapPanel } from './panels/treemap-panel';
 
@@ -63,12 +64,7 @@ export function App(): ReactNode {
         </p>
       )}
       <main className="grid">
-        <PlaceholderPanel
-          title="Price Action"
-          section="§3.2"
-          query="portfolioPriceSeries"
-          horizon={horizon}
-        />
+        <PriceActionPanel portfolioId={portfolioId} horizon={horizon} />
         <FourPricePanel portfolioId={portfolioId} />
         <PlaceholderPanel
           title="VOLcano"

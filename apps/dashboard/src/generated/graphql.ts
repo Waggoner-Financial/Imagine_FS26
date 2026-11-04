@@ -28,6 +28,12 @@ export type ModelPortfolioCode =
   | 'FCF'
   | 'REVENUE';
 
+/** Which line of a Price Action chart a series represents. */
+export type SeriesKind =
+  | 'BENCHMARK'
+  | 'INDEX'
+  | 'PORTFOLIO';
+
 export type PortfoliosQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -46,6 +52,14 @@ export type DeploymentQueryVariables = Exact<{
 
 
 export type DeploymentQuery = { deploymentSummary: { accountsCount: number, clientsCount: number, asOf: string, aum: { value: number | null, source: AumSource, reason: string | null }, gainLoss: Array<{ horizon: DashboardHorizon, value: number | null, pct: number | null, reason: string | null }> } };
+
+export type PriceSeriesQueryVariables = Exact<{
+  portfolioId: string | number;
+  horizon: DashboardHorizon;
+}>;
+
+
+export type PriceSeriesQuery = { portfolioPriceSeries: { horizon: DashboardHorizon, windowStart: string, asOf: string, series: Array<{ id: string, label: string, kind: SeriesKind, reason: string | null, points: Array<{ date: string, value: number }> }> } };
 
 export type SectorWeightsQueryVariables = Exact<{
   portfolioId: string | number;
@@ -210,6 +224,25 @@ export const DeploymentDocument = new TypedDocumentString(`
   }
 }
     `) as unknown as TypedDocumentString<DeploymentQuery, DeploymentQueryVariables>;
+export const PriceSeriesDocument = new TypedDocumentString(`
+    query PriceSeries($portfolioId: ID!, $horizon: DashboardHorizon!) {
+  portfolioPriceSeries(portfolioId: $portfolioId, horizon: $horizon) {
+    horizon
+    windowStart
+    asOf
+    series {
+      id
+      label
+      kind
+      reason
+      points {
+        date
+        value
+      }
+    }
+  }
+}
+    `) as unknown as TypedDocumentString<PriceSeriesQuery, PriceSeriesQueryVariables>;
 export const SectorWeightsDocument = new TypedDocumentString(`
     query SectorWeights($portfolioId: ID!, $horizon: DashboardHorizon!) {
   portfolioSectorWeights(portfolioId: $portfolioId, horizon: $horizon) {
