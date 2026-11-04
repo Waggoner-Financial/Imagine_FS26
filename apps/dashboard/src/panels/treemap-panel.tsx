@@ -90,9 +90,10 @@ export function TreemapPanel({
           )}
           <TreemapChart tiles={tiles} onZoom={setZoomed} />
           <p className="treemap-caption">
-            Area = weight, including cash. Colour = {RETURN_WINDOW[horizon]},
-            excluding cash (cash is neutral). S&amp;P 500{' '}
-            {formatSignedPercent(payload.benchmarkReturn)} over the same window.
+            (Area = weight, including cash. Colour = {RETURN_WINDOW[horizon]},
+            excluding cash since it is neutral. S&amp;P 500{' '}
+            {formatSignedPercent(payload.benchmarkReturn)} over the same
+            window.)
             {missingReturns &&
               ' Some returns are not available for this horizon.'}
           </p>

@@ -1,6 +1,6 @@
 import { type ReactNode, useState } from 'react';
 
-import { formatSignedPercent } from '../lib/format';
+import { formatPercent, formatSignedPercent } from '../lib/format';
 import {
   biggestMove,
   layoutTiles,
@@ -87,11 +87,14 @@ function TreemapTile({
     },
   };
 
+  const figure = tile.isCash
+    ? formatPercent(tile.weight)
+    : formatSignedPercent(tile.return);
   const label = (
-    <>
+    <span className="treemap-label">
       <span className="treemap-name">{tile.label}</span>
-      <span className="treemap-return">{formatSignedPercent(tile.return)}</span>
-    </>
+      <span className="treemap-return">{figure}</span>
+    </span>
   );
   if (tile.href !== undefined) {
     return (
@@ -102,7 +105,7 @@ function TreemapTile({
   }
   if (tile.isCash) {
     return (
-      <div {...props} role="img">
+      <div {...props} role="img" tabIndex={0}>
         {label}
       </div>
     );

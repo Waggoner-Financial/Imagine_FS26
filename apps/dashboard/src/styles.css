@@ -280,11 +280,7 @@ body {
 
 .treemap-tile {
   position: absolute;
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-  justify-content: flex-end;
-  padding: 6px 8px;
+  padding: 0;
   overflow: hidden;
   border: 0;
   border-radius: 4px;
@@ -296,6 +292,77 @@ body {
   container-type: size;
 }
 
+.treemap-label {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  justify-content: flex-end;
+  padding: 6px 8px;
+  overflow: hidden;
+}
+
+.treemap-name {
+  font-size: clamp(9px, 9cqw, 13px);
+  font-weight: 600;
+  line-height: 1.2;
+  overflow-wrap: normal;
+}
+
+.treemap-return {
+  font-size: 0.75rem;
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+  line-height: 1.25;
+  white-space: nowrap;
+}
+
+@container (width < 56px) and (height >= 90px) {
+  .treemap-label {
+    flex-direction: row;
+    gap: 6px;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 8px 0;
+    writing-mode: vertical-rl;
+    transform: rotate(180deg);
+  }
+
+  .treemap-name {
+    font-size: 12px;
+    white-space: nowrap;
+  }
+}
+
+@container (height < 48px) and (width >= 56px) {
+  .treemap-label {
+    flex-direction: row;
+    gap: 6px;
+    align-items: flex-end;
+    justify-content: flex-start;
+    padding: 4px 8px;
+  }
+
+  .treemap-name {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}
+
+@container (width < 56px) and (height < 90px) {
+  .treemap-name {
+    display: none;
+  }
+}
+
+@container ((width < 40px) and (height < 90px)) or (height < 20px) {
+  .treemap-return {
+    display: none;
+  }
+}
+
 .treemap-tile[role='img'] {
   cursor: default;
 }
@@ -305,31 +372,10 @@ body {
   outline-offset: -2px;
 }
 
-.treemap-name {
-  font-size: clamp(9px, 9cqw, 13px);
-  font-weight: 600;
-  line-height: 1.2;
-  overflow-wrap: anywhere;
-}
-
 @container (height < 52px) {
   .treemap-name {
     display: none;
   }
-}
-
-@container (width < 56px) or (height < 22px) {
-  .treemap-return {
-    display: none;
-  }
-}
-
-.treemap-return {
-  font-size: 0.75rem;
-  font-weight: 500;
-  font-variant-numeric: tabular-nums;
-  line-height: 1.25;
-  white-space: nowrap;
 }
 
 .treemap-back {
@@ -426,7 +472,6 @@ body {
 }
 
 .treemap-caption {
-  text-decoration: underline dotted;
   background: none;
   cursor: help;
 }
