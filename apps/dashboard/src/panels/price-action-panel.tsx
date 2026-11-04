@@ -20,13 +20,13 @@ import type {
   SeriesKind,
 } from '../generated/graphql';
 import {
+  axisDateFormatter,
   formatDate,
   formatPercent,
   formatSignedPercent,
   MISSING,
 } from '../lib/format';
 import {
-  axisDateFormatter,
   type ChartRow,
   lastValue,
   SERIES_STYLE,

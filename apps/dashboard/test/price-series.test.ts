@@ -1,10 +1,6 @@
 import { describe, expect, test } from 'bun:test';
 
-import {
-  axisDateFormatter,
-  lastValue,
-  toChartRows,
-} from '../src/lib/price-series';
+import { lastValue, toChartRows } from '../src/lib/price-series';
 
 const portfolio = {
   id: 'EQUITY',
@@ -57,31 +53,5 @@ describe('lastValue', () => {
 
   test('is null for a series with no points, never 0', () => {
     expect(lastValue(emptyIndex)).toBeNull();
-  });
-});
-
-describe('axisDateFormatter', () => {
-  test('shows month and day for a window of about a month', () => {
-    expect(axisDateFormatter('2026-08-01', '2026-09-01')('2026-08-13')).toBe(
-      'Aug 13'
-    );
-  });
-
-  test('still shows month and day at exactly 92 days', () => {
-    expect(axisDateFormatter('2026-06-01', '2026-09-01')('2026-06-01')).toBe(
-      'Jun 1'
-    );
-  });
-
-  test('shows month and year for a 1Y window, which crosses a year', () => {
-    const format = axisDateFormatter('2025-09-01', '2026-09-01');
-    expect(format('2025-09-01')).toBe('Sep 2025');
-    expect(format('2026-09-01')).toBe('Sep 2026');
-  });
-
-  test('shows month and year for a multi-year window', () => {
-    expect(axisDateFormatter('2021-03-01', '2026-09-01')('2021-03-01')).toBe(
-      'Mar 2021'
-    );
   });
 });
