@@ -49,6 +49,9 @@ export function graphql(source: "\n  query Deployment($portfolioId: ID!) {\n    
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(source: "\n  query SectorWeights($portfolioId: ID!, $horizon: DashboardHorizon!) {\n    portfolioSectorWeights(portfolioId: $portfolioId, horizon: $horizon) {\n      horizon\n      benchmarkReturn\n      asOf\n      sectors {\n        name\n        weight\n        return\n        vsBenchmark\n        isCash\n        holdings\n      }\n      holdings {\n        ticker\n        name\n        sector\n        weight\n        return\n        isCash\n      }\n    }\n  }\n"): typeof import('./graphql').SectorWeightsDocument;
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
 export function graphql(source: "\n  query ExpectedReturn($portfolioId: ID!) {\n    portfolioExpectedReturn(portfolioId: $portfolioId) {\n      portfolioEr\n      coveredWeight\n      topContributors {\n        ticker\n        targetWeight\n        price\n        priceTarget\n        er\n        contribution\n      }\n      bottomContributors {\n        ticker\n        targetWeight\n        price\n        priceTarget\n        er\n        contribution\n      }\n      noTarget\n      stalePriceTargets {\n        count\n        tickers {\n          ticker\n          priceTargetDate\n          lastEarningsDate\n        }\n      }\n      asOf\n    }\n  }\n"): typeof import('./graphql').ExpectedReturnDocument;
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
