@@ -70,3 +70,166 @@ export const priceSeriesDocument = graphql(`
     }
   }
 `);
+
+export const sectorWeightsDocument = graphql(`
+  query SectorWeights($portfolioId: ID!, $horizon: DashboardHorizon!) {
+    portfolioSectorWeights(portfolioId: $portfolioId, horizon: $horizon) {
+      horizon
+      benchmarkReturn
+      asOf
+      sectors {
+        name
+        weight
+        return
+        vsBenchmark
+        isCash
+        holdings
+      }
+      holdings {
+        ticker
+        name
+        sector
+        weight
+        return
+        isCash
+      }
+    }
+  }
+`);
+export const expectedReturnDocument = graphql(`
+  query ExpectedReturn($portfolioId: ID!) {
+    portfolioExpectedReturn(portfolioId: $portfolioId) {
+      portfolioEr
+      coveredWeight
+      topContributors {
+        ticker
+        targetWeight
+        price
+        priceTarget
+        er
+        contribution
+      }
+      bottomContributors {
+        ticker
+        targetWeight
+        price
+        priceTarget
+        er
+        contribution
+      }
+      noTarget
+      stalePriceTargets {
+        count
+        tickers {
+          ticker
+          priceTargetDate
+          lastEarningsDate
+        }
+      }
+      asOf
+    }
+  }
+`);
+
+export const fourPriceDocument = graphql(`
+  query FourPrice($portfolioId: ID!) {
+    portfolioFourPrice(portfolioId: $portfolioId) {
+      asOf
+      byTargetWeight {
+        ...FourPriceSetFields
+      }
+      byWeightedEr {
+        ...FourPriceSetFields
+      }
+      vsSp500 {
+        ...FourPriceRankingFields
+      }
+      vsIndex {
+        ...FourPriceRankingFields
+      }
+    }
+  }
+
+  fragment FourPriceValueFields on FourPriceValue {
+    multiple
+    coverageWeight
+    coveredHoldings
+    totalHoldings
+    reason
+  }
+
+  fragment FourPriceSetFields on FourPriceSet {
+    rev {
+      ...FourPriceValueFields
+    }
+    fcf {
+      ...FourPriceValueFields
+    }
+    ern {
+      ...FourPriceValueFields
+    }
+    div {
+      ...FourPriceValueFields
+    }
+  }
+
+  fragment RankStatFields on RankStat {
+    percentile
+    zScore
+    universeMean
+    universeStdDev
+    reason
+  }
+
+  fragment FourPriceRankingFields on FourPriceRanking {
+    universe
+    constituents
+    rev {
+      ...RankStatFields
+    }
+    fcf {
+      ...RankStatFields
+    }
+    ern {
+      ...RankStatFields
+    }
+    div {
+      ...RankStatFields
+    }
+  }
+`);
+
+export const moversDocument = graphql(`
+  query Movers($portfolioId: ID!) {
+    portfolioMovers(portfolioId: $portfolioId, count: 3) {
+      tradeDate
+      baselineDate
+      asOf
+      reason
+      top {
+        ticker
+        name
+        returnSinceTrade
+        targetWeight
+        currentWeight
+        driftPp
+        contribution
+      }
+      bottom {
+        ticker
+        name
+        returnSinceTrade
+        targetWeight
+        currentWeight
+        driftPp
+        contribution
+      }
+      attribution {
+        portfolioReturn
+        topShare
+        bottomShare
+        reason
+      }
+    }
+  }
+`);

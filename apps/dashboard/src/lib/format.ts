@@ -17,6 +17,24 @@ const signedPercent = new Intl.NumberFormat('en-US', {
   style: 'percent',
 });
 
+const compactPercent = new Intl.NumberFormat('en-US', {
+  maximumFractionDigits: 1,
+  style: 'percent',
+});
+
+const signedCompactPercent = new Intl.NumberFormat('en-US', {
+  maximumFractionDigits: 1,
+  minimumFractionDigits: 1,
+  signDisplay: 'exceptZero',
+  style: 'percent',
+});
+
+const percentagePoints = new Intl.NumberFormat('en-US', {
+  maximumFractionDigits: 2,
+  minimumFractionDigits: 2,
+  signDisplay: 'exceptZero',
+});
+
 // Compact dollars with four significant digits: 184300000 -> "$184.3M".
 const money = new Intl.NumberFormat('en-US', {
   currency: 'USD',
@@ -30,6 +48,13 @@ const signedMoney = new Intl.NumberFormat('en-US', {
   maximumSignificantDigits: 4,
   notation: 'compact',
   signDisplay: 'exceptZero',
+  style: 'currency',
+});
+
+const price = new Intl.NumberFormat('en-US', {
+  currency: 'USD',
+  maximumFractionDigits: 2,
+  minimumFractionDigits: 2,
   style: 'currency',
 });
 
@@ -71,6 +96,32 @@ export function formatSignedPercent(
   return fraction == null ? MISSING : signedPercent.format(fraction);
 }
 
+/** A compact weight, such as 0.12 -> "12%". */
+export function formatCompactPercent(
+  fraction: number | null | undefined
+): string {
+  return fraction == null ? MISSING : compactPercent.format(fraction);
+}
+
+/** A compact signed return, such as 0.267 -> "+26.7%". */
+export function formatSignedCompactPercent(
+  fraction: number | null | undefined
+): string {
+  return fraction == null ? MISSING : signedCompactPercent.format(fraction);
+}
+
+/** A fractional contribution expressed in percentage points. */
+export function formatPercentagePoints(
+  fraction: number | null | undefined
+): string {
+  return fraction == null ? MISSING : percentagePoints.format(fraction * 100);
+}
+
+/** A security price with two decimal places. */
+export function formatPrice(dollars: number | null | undefined): string {
+  return dollars == null ? MISSING : price.format(dollars);
+}
+
 export function formatMoney(dollars: number | null | undefined): string {
   return dollars == null ? MISSING : money.format(dollars);
 }
@@ -103,4 +154,61 @@ export function axisDateFormatter(
     MS_PER_DAY;
   const format = spanDays > DAY_LABEL_MAX_DAYS ? monthLabel : dayLabel;
   return (isoDate) => format.format(new Date(`${isoDate}T00:00:00Z`));
+}
+
+const multiple = new Intl.NumberFormat('en-US', {
+  maximumFractionDigits: 1,
+  minimumFractionDigits: 1,
+});
+
+const zScore = new Intl.NumberFormat('en-US', {
+  maximumFractionDigits: 1,
+  minimumFractionDigits: 1,
+  signDisplay: 'exceptZero',
+});
+
+const ordinal = new Intl.PluralRules('en-US', { type: 'ordinal' });
+
+const ORDINAL_SUFFIXES: Record<Intl.LDMLPluralRule, string> = {
+  few: 'rd',
+  many: 'th',
+  one: 'st',
+  other: 'th',
+  two: 'nd',
+  zero: 'th',
+};
+
+/** A valuation multiple, such as 6.8 -> "6.8×". */
+export function formatMultiple(value: number | null | undefined): string {
+  return value == null ? MISSING : `${multiple.format(value)}×`;
+}
+
+/** A percentile given as a fraction, such as 0.82 -> "82nd". */
+export function formatPercentile(fraction: number | null | undefined): string {
+  if (fraction == null) return MISSING;
+  const rank = Math.round(fraction * 100);
+  return `${rank}${ORDINAL_SUFFIXES[ordinal.select(rank)]}`;
+}
+
+/** A z-score with an explicit sign, such as 1.1 -> "+1.1". */
+export function formatZScore(value: number | null | undefined): string {
+  return value == null ? MISSING : zScore.format(value);
+}
+
+const driftPp = new Intl.NumberFormat('en-US', {
+  maximumFractionDigits: 1,
+  minimumFractionDigits: 1,
+  signDisplay: 'exceptZero',
+});
+
+export function formatDriftPp(value: number | null | undefined): string {
+  return value == null ? MISSING : `${driftPp.format(value)} pp`;
+}
+
+/** An attribution share with its sign, or the API's reason in its place. */
+export function formatShare(
+  share: number | null | undefined,
+  reason: string | null | undefined
+): string {
+  return share == null ? (reason ?? MISSING) : formatSignedPercent(share);
 }

@@ -16,6 +16,11 @@
   --series-benchmark: #8a5a00;
   --series-index: #7b3fa0;
   --radius: 10px;
+  --warning: #8a4b08;
+  --warning-bg: #fff4d6;
+
+  --tile-neutral: #e9ecf0;
+  --tile-ink: #1b1f24;
 
   color: var(--text);
   font-family:
@@ -40,6 +45,8 @@
     --series-portfolio: #7ea0ff;
     --series-benchmark: #e0b45c;
     --series-index: #c99ae6;
+    --warning: #ffd27a;
+    --warning-bg: #3a2a0f;
   }
 }
 
@@ -241,6 +248,195 @@ body {
   font-size: 0.8rem;
 }
 
+.warning-badge {
+  display: inline-flex;
+  gap: 4px;
+  align-items: center;
+  padding: 4px 10px;
+  border: 1px solid var(--warning);
+  border-radius: 999px;
+  color: var(--warning);
+  font: inherit;
+  font-size: 0.8rem;
+  font-weight: 600;
+  background: var(--warning-bg);
+  cursor: pointer;
+}
+
+.warning-badge:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.rebalancer-caption {
+  margin: 12px 0 0;
+  color: var(--muted);
+  font-size: 0.75rem;
+}
+
+.rebalancer-summary {
+  padding-bottom: 12px;
+  margin: 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.rebalancer-headline {
+  display: flex;
+  gap: 10px;
+  align-items: baseline;
+}
+
+.rebalancer-headline dt {
+  color: var(--muted);
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.rebalancer-headline dd {
+  order: -1;
+  margin: 0;
+  font-size: 2rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.rebalancer-coverage dd {
+  margin: 4px 0 0;
+  color: var(--muted);
+  font-size: 0.8rem;
+}
+
+.figure-up {
+  color: var(--up);
+}
+
+.figure-down {
+  color: var(--down);
+}
+
+.rebalancer-table {
+  width: 100%;
+  margin-top: 16px;
+  border-collapse: collapse;
+  table-layout: fixed;
+  font-size: 0.8rem;
+}
+
+.rebalancer-table th,
+.rebalancer-table td {
+  padding: 8px 6px;
+  border-bottom: 1px solid var(--border);
+  text-align: right;
+  vertical-align: middle;
+  font-variant-numeric: tabular-nums;
+}
+
+.rebalancer-table th:first-child,
+.rebalancer-table td:first-child {
+  width: 42%;
+  text-align: left;
+}
+
+.rebalancer-table thead th {
+  color: var(--muted);
+  font-size: 0.7rem;
+  font-weight: 600;
+}
+
+.rebalancer-table abbr {
+  text-decoration: none;
+}
+
+.contributor-group th {
+  padding-top: 12px;
+  padding-bottom: 6px;
+  color: var(--muted);
+  font-size: 0.7rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  background: var(--bg);
+}
+
+.contributor-identity {
+  display: flex;
+  gap: 5px;
+  align-items: center;
+}
+
+.ticker-badge {
+  display: inline-block;
+  padding: 2px 7px;
+  border-radius: 5px;
+  color: var(--text);
+  font-weight: 700;
+  background: var(--border);
+}
+
+.stale-target-icon {
+  color: var(--warning);
+  font-size: 0.8rem;
+}
+
+.contributor-prices {
+  display: block;
+  margin-top: 4px;
+  color: var(--muted);
+  font-size: 0.68rem;
+  font-weight: 400;
+  white-space: nowrap;
+}
+
+.contributor-pp {
+  font-weight: 700;
+}
+
+.rebalancer-empty {
+  padding: 12px;
+  color: var(--muted);
+  text-align: center;
+}
+
+.rebalancer-notice {
+  padding: 10px;
+  margin-top: 12px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  font-size: 0.8rem;
+  background: var(--bg);
+}
+
+.rebalancer-notice h3 {
+  margin: 0 0 8px;
+  font-size: 0.9rem;
+}
+
+.rebalancer-notice p,
+.rebalancer-notice ul {
+  margin: 0;
+}
+
+.rebalancer-notice ul {
+  padding-left: 20px;
+}
+
+.warning-notice {
+  border-color: var(--warning);
+  background: var(--warning-bg);
+}
+
+@media (width < 420px) {
+  .rebalancer-table th,
+  .rebalancer-table td {
+    padding-right: 3px;
+    padding-left: 3px;
+    font-size: 0.72rem;
+  }
+
+  .contributor-prices {
+    font-size: 0.62rem;
+  }
+}
+
 /* Colour is never the only carrier of sign: figures keep their +/- too. */
 .pill {
   display: inline-block;
@@ -359,4 +555,308 @@ body {
 .price-tooltip dd {
   margin: 0;
   font-variant-numeric: tabular-nums;
+}
+
+/* Treemap panel */
+.treemap {
+  position: relative;
+  min-height: 320px;
+  overflow: hidden;
+}
+
+.treemap-tile {
+  position: absolute;
+  padding: 0;
+  overflow: hidden;
+  border: 0;
+  border-radius: 4px;
+  color: var(--tile-ink);
+  font: inherit;
+  text-align: left;
+  text-decoration: none;
+  cursor: pointer;
+  container-type: size;
+}
+
+.treemap-label {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  justify-content: flex-end;
+  padding: 6px 8px;
+  overflow: hidden;
+}
+
+.treemap-name {
+  font-size: clamp(9px, 9cqw, 13px);
+  font-weight: 600;
+  line-height: 1.2;
+  overflow-wrap: normal;
+}
+
+.treemap-return {
+  font-size: 0.75rem;
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+  line-height: 1.25;
+  white-space: nowrap;
+}
+
+@container (width < 56px) and (height >= 90px) {
+  .treemap-label {
+    flex-direction: row;
+    gap: 6px;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 8px 0;
+    writing-mode: vertical-rl;
+    transform: rotate(180deg);
+  }
+
+  .treemap-name {
+    font-size: 12px;
+    white-space: nowrap;
+  }
+}
+
+@container (height < 48px) and (width >= 56px) {
+  .treemap-label {
+    flex-direction: row;
+    gap: 6px;
+    align-items: flex-end;
+    justify-content: flex-start;
+    padding: 4px 8px;
+  }
+
+  .treemap-name {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}
+
+@container (width < 56px) and (height < 90px) {
+  .treemap-name {
+    display: none;
+  }
+}
+
+@container ((width < 40px) and (height < 90px)) or (height < 20px) {
+  .treemap-return {
+    display: none;
+  }
+}
+
+.treemap-tile[role='img'] {
+  cursor: default;
+}
+
+.treemap-tile:focus-visible {
+  outline: 2px solid currentcolor;
+  outline-offset: -2px;
+}
+
+@container (height < 52px) {
+  .treemap-name {
+    display: none;
+  }
+}
+
+.treemap-back {
+  margin-bottom: 8px;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+/* Portfolio 4P (spec §3.3) */
+.four-price-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-variant-numeric: tabular-nums;
+}
+
+.four-price-table th,
+.four-price-table td {
+  padding: 6px 4px;
+  border-bottom: 1px solid var(--border);
+  text-align: right;
+}
+
+.four-price-table th[scope='row'],
+.four-price-table thead th:first-child {
+  text-align: left;
+}
+
+.four-price-table thead th {
+  color: var(--muted);
+  font-size: 0.8rem;
+  font-weight: 500;
+}
+
+.four-price-table abbr {
+  text-decoration: none;
+}
+
+/* The metric name opens its coverage tooltip on hover, focus or tap. */
+.four-price-metric {
+  position: relative;
+}
+
+.four-price-metric button {
+  padding: 0;
+  border: 0;
+  color: inherit;
+  font: inherit;
+  text-decoration: underline;
+  background: none;
+  cursor: pointer;
+}
+
+.treemap-detail {
+  display: flex;
+  flex-wrap: wrap;
+  row-gap: 6px;
+  align-items: baseline;
+  min-height: 2.5em;
+  margin: 12px 0 0;
+  padding: 8px 12px;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  background: color-mix(in srgb, var(--text) 6%, transparent);
+}
+
+.treemap-detail-title {
+  margin-right: 12px;
+  font-weight: 600;
+}
+
+.treemap-detail-item {
+  padding: 0 12px;
+  border-left: 1px solid var(--border);
+  white-space: nowrap;
+}
+
+.treemap-detail-label {
+  margin-right: 6px;
+  color: var(--muted);
+}
+
+.treemap-detail-value {
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+.treemap-detail-hint {
+  color: var(--muted);
+}
+
+.treemap-caption {
+  background: none;
+  cursor: help;
+}
+
+.four-price-metric button:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.four-price-tip {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  z-index: 1;
+  display: none;
+  width: max-content;
+  max-width: 260px;
+  padding: 6px 8px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  color: var(--text);
+  font-size: 0.75rem;
+  font-weight: 400;
+  white-space: pre-line;
+  background: var(--card);
+}
+
+.four-price-metric button:hover + .four-price-tip,
+.four-price-metric button:focus + .four-price-tip {
+  display: block;
+}
+
+.four-price-table tbody td {
+  font-weight: 600;
+}
+
+/* Thin coverage: still a figure, but visibly one to read with care. */
+.four-price-low {
+  color: var(--muted);
+}
+
+.four-price-low-label {
+  display: block;
+  font-size: 0.7rem;
+  font-weight: 400;
+}
+
+.four-price-notes {
+  margin: 8px 0 0;
+  padding-left: 16px;
+  color: var(--muted);
+  font-size: 0.8rem;
+}
+
+.four-price-caption {
+  margin: 12px 0 0;
+  color: var(--muted);
+  font-size: 0.8rem;
+}
+
+/* Drift's mover tables: ticker on the left, figures right-aligned. */
+.movers {
+  width: 100%;
+  margin-bottom: 16px;
+  border-collapse: collapse;
+  font-variant-numeric: tabular-nums;
+}
+
+.movers caption {
+  padding-bottom: 4px;
+  color: var(--muted);
+  font-size: 0.8rem;
+  text-align: left;
+}
+
+.movers th,
+.movers td {
+  padding: 6px 0 6px 12px;
+  border-bottom: 1px solid var(--border);
+  text-align: right;
+}
+
+.movers thead th {
+  color: var(--muted);
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+.movers th:first-child {
+  padding-left: 0;
+  text-align: left;
+}
+
+.movers a {
+  color: var(--accent);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.movers a:hover {
+  text-decoration: underline;
 }

@@ -9,7 +9,11 @@ import type { DashboardHorizon } from './generated/graphql';
 import { isHorizon } from './lib/horizons';
 import { usePersistedState } from './lib/use-persisted-state';
 import { DeploymentPanel } from './panels/deployment-panel';
+import { DriftPanel } from './panels/drift-panel';
+import { FourPricePanel } from './panels/four-price-panel';
 import { PriceActionPanel } from './panels/price-action-panel';
+import { RebalancerPanel } from './panels/rebalancer-panel';
+import { TreemapPanel } from './panels/treemap-panel';
 
 // EQUITY is the default portfolio (spec §1).
 const DEFAULT_PORTFOLIO_ID = 'p-equity';
@@ -61,33 +65,16 @@ export function App(): ReactNode {
       )}
       <main className="grid">
         <PriceActionPanel portfolioId={portfolioId} horizon={horizon} />
-        <PlaceholderPanel
-          title="Portfolio 4P"
-          section="§3.3"
-          query="portfolioFourPrice"
-        />
+        <FourPricePanel portfolioId={portfolioId} />
         <PlaceholderPanel
           title="VOLcano"
           section="§3.4"
           query="portfolioRisk"
         />
-        <PlaceholderPanel
-          title="Drift"
-          section="§3.5"
-          query="portfolioMovers"
-        />
-        <PlaceholderPanel
-          title="Rebalancer"
-          section="§3.6"
-          query="portfolioExpectedReturn"
-        />
+        <DriftPanel portfolioId={portfolioId} />
+        <RebalancerPanel key={portfolioId} portfolioId={portfolioId} />
         <DeploymentPanel portfolioId={portfolioId} />
-        <PlaceholderPanel
-          title="Sector / Holdings"
-          section="§3.8"
-          query="portfolioSectorWeights"
-          horizon={horizon}
-        />
+        <TreemapPanel horizon={horizon} portfolioId={portfolioId} />
       </main>
     </div>
   );
