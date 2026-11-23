@@ -84,6 +84,13 @@ export type MoversQueryVariables = Exact<{
 
 export type MoversQuery = { portfolioMovers: { tradeDate: string | null, baselineDate: string | null, asOf: string, reason: string | null, top: Array<{ ticker: string, name: string, returnSinceTrade: number, targetWeight: number, currentWeight: number, driftPp: number, contribution: number }>, bottom: Array<{ ticker: string, name: string, returnSinceTrade: number, targetWeight: number, currentWeight: number, driftPp: number, contribution: number }>, attribution: { portfolioReturn: number, topShare: number | null, bottomShare: number | null, reason: string | null } | null } };
 
+export type RiskQueryVariables = Exact<{
+  portfolioId: string | number;
+}>;
+
+
+export type RiskQuery = { portfolioRisk: { windowDays: number, requestedWindowDays: number, windowNote: string | null, var95: number, var99: number, es95: number, es99: number, var95TenDay: number, var99TenDay: number, es95TenDay: number, es99TenDay: number, garchVolDaily: number | null, garchVolAnnualized: number | null, garchReason: string | null, weightedVolAnnualized: number | null, weightedVolCoverage: number, asOf: string, topCorrelations: Array<{ a: string, b: string, rho: number }>, bottomCorrelations: Array<{ a: string, b: string, rho: number }> } };
+
 export class TypedDocumentString<TResult, TVariables>
   extends String
   implements DocumentTypeDecoration<TResult, TVariables>
@@ -365,3 +372,36 @@ export const MoversDocument = new TypedDocumentString(`
   }
 }
     `) as unknown as TypedDocumentString<MoversQuery, MoversQueryVariables>;
+export const RiskDocument = new TypedDocumentString(`
+    query Risk($portfolioId: ID!) {
+  portfolioRisk(portfolioId: $portfolioId) {
+    windowDays
+    requestedWindowDays
+    windowNote
+    var95
+    var99
+    es95
+    es99
+    var95TenDay
+    var99TenDay
+    es95TenDay
+    es99TenDay
+    garchVolDaily
+    garchVolAnnualized
+    garchReason
+    weightedVolAnnualized
+    weightedVolCoverage
+    topCorrelations {
+      a
+      b
+      rho
+    }
+    bottomCorrelations {
+      a
+      b
+      rho
+    }
+    asOf
+  }
+}
+    `) as unknown as TypedDocumentString<RiskQuery, RiskQueryVariables>;
