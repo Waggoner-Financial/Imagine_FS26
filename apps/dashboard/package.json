@@ -7,7 +7,9 @@
     "@tanstack/react-query": "catalog:",
     "d3-hierarchy": "catalog:",
     "react": "catalog:",
-    "react-dom": "catalog:"
+    "react-dom": "catalog:",
+    "react-is": "catalog:",
+    "recharts": "catalog:"
   },
   "devDependencies": {
     "@graphql-codegen/cli": "catalog:",

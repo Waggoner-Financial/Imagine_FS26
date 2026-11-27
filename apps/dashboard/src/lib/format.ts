@@ -67,6 +67,24 @@ const date = new Intl.DateTimeFormat('en-US', {
   timeZone: 'UTC',
 });
 
+const dayLabel = new Intl.DateTimeFormat('en-US', {
+  day: 'numeric',
+  month: 'short',
+  timeZone: 'UTC',
+});
+
+const monthLabel = new Intl.DateTimeFormat('en-US', {
+  month: 'short',
+  timeZone: 'UTC',
+  year: 'numeric',
+});
+
+const MS_PER_DAY = 86_400_000;
+// Windows up to about three months (1D, 1M, a recent trade date) label ticks
+// by day; anything longer spans enough months, or crosses a year boundary,
+// that the label needs the year instead.
+const DAY_LABEL_MAX_DAYS = 92;
+
 export function formatPercent(fraction: number | null | undefined): string {
   return fraction == null ? MISSING : percent.format(fraction);
 }
@@ -121,6 +139,21 @@ export function formatCount(value: number): string {
 export function formatDate(isoDate: string | null | undefined): string {
   if (isoDate == null || isoDate === '') return MISSING;
   return date.format(new Date(`${isoDate}T00:00:00Z`));
+}
+
+// Builds the x-axis tick formatter for one window: "Aug 13" for windows up to
+// about three months, "Mar 2021" for longer ones, so a 1Y axis never shows
+// the same "Sep 1" for two different years. The span is measured once here
+// rather than on every tick.
+export function axisDateFormatter(
+  windowStart: string,
+  asOf: string
+): (isoDate: string) => string {
+  const spanDays =
+    (Date.parse(`${asOf}T00:00:00Z`) - Date.parse(`${windowStart}T00:00:00Z`)) /
+    MS_PER_DAY;
+  const format = spanDays > DAY_LABEL_MAX_DAYS ? monthLabel : dayLabel;
+  return (isoDate) => format.format(new Date(`${isoDate}T00:00:00Z`));
 }
 
 const multiple = new Intl.NumberFormat('en-US', {
