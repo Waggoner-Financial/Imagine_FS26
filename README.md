@@ -41,6 +41,13 @@ pnpm install
 moon run dashboard:dev
 ```
 
+If `pnpm install` fails with `ERR_PNPM_LOCKFILE_CONFIG_MISMATCH`, or
+`git status` shows `pnpm-lock.yaml` modified when you have not changed a
+dependency, a globally installed pnpm ran instead of the pinned one. Open a new
+terminal so proto's shims come first on your `PATH`, check that `pnpm --version`
+prints the version pinned in `.prototools`, then restore the lockfile with
+`git checkout -- pnpm-lock.yaml` and install again.
+
 Open <http://localhost:5173>. The dashboard reads the hosted mock API, so
 nothing else needs to run. Switch portfolios with the selector at the top.
 
