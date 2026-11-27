@@ -179,3 +179,20 @@ export function formatShare(
 ): string {
   return share == null ? (reason ?? MISSING) : formatSignedPercent(share);
 }
+
+const correlation = new Intl.NumberFormat('en-US', {
+  maximumFractionDigits: 2,
+  minimumFractionDigits: 2,
+});
+
+/** A correlation coefficient, such as 0.65 -> "0.65" or -0.08 -> "-0.08". */
+export function formatCorrelation(rho: number): string {
+  return correlation.format(rho);
+}
+
+/** The risk window, such as "320 of 500 trading days" when it was shortened. */
+export function formatRiskWindow(days: number, requestedDays: number): string {
+  return days < requestedDays
+    ? `${days} of ${requestedDays} trading days`
+    : `${days} trading days`;
+}

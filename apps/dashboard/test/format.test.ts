@@ -2,6 +2,7 @@ import { describe, expect, test } from 'bun:test';
 
 import {
   formatCompactPercent,
+  formatCorrelation,
   formatCount,
   formatDate,
   formatDriftPp,
@@ -11,6 +12,7 @@ import {
   formatPercentagePoints,
   formatPercentile,
   formatPrice,
+  formatRiskWindow,
   formatShare,
   formatSignedCompactPercent,
   formatSignedMoney,
@@ -153,5 +155,23 @@ describe('attribution shares', () => {
       'n/a (portfolio flat)'
     );
     expect(formatShare(null, null)).toBe(MISSING);
+  });
+});
+
+describe('correlations', () => {
+  test('show two decimals, signed only when negative', () => {
+    expect(formatCorrelation(0.65)).toBe('0.65');
+    expect(formatCorrelation(0.02)).toBe('0.02');
+    expect(formatCorrelation(-0.08)).toBe('-0.08');
+  });
+});
+
+describe('risk window', () => {
+  test('names the days used and requested when shortened', () => {
+    expect(formatRiskWindow(320, 500)).toBe('320 of 500 trading days');
+  });
+
+  test('names the full window once when not shortened', () => {
+    expect(formatRiskWindow(500, 500)).toBe('500 trading days');
   });
 });

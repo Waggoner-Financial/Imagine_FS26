@@ -213,3 +213,37 @@ export const moversDocument = graphql(`
     }
   }
 `);
+
+export const riskDocument = graphql(`
+  query Risk($portfolioId: ID!) {
+    portfolioRisk(portfolioId: $portfolioId) {
+      windowDays
+      requestedWindowDays
+      windowNote
+      var95
+      var99
+      es95
+      es99
+      var95TenDay
+      var99TenDay
+      es95TenDay
+      es99TenDay
+      garchVolDaily
+      garchVolAnnualized
+      garchReason
+      weightedVolAnnualized
+      weightedVolCoverage
+      topCorrelations {
+        a
+        b
+        rho
+      }
+      bottomCorrelations {
+        a
+        b
+        rho
+      }
+      asOf
+    }
+  }
+`);

@@ -767,3 +767,69 @@ body {
 .movers a:hover {
   text-decoration: underline;
 }
+
+/* VOLcano (spec §3.4): risk figures in neutral ink, sign carried by the minus. */
+.volcano-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-variant-numeric: tabular-nums;
+}
+
+.volcano-table th,
+.volcano-table td {
+  padding: 6px 4px;
+  border-bottom: 1px solid var(--border);
+  text-align: right;
+}
+
+.volcano-table th[scope='row'] {
+  text-align: left;
+}
+
+.volcano-table thead th {
+  color: var(--muted);
+  font-size: 0.8rem;
+  font-weight: 500;
+}
+
+.volcano-table tbody td {
+  font-weight: 600;
+}
+
+.volcano-stats {
+  margin-top: 16px;
+}
+
+.volcano-pairs {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+  margin-top: 16px;
+}
+
+.volcano-pairs-title {
+  margin: 0 0 4px;
+  color: var(--muted);
+  font-size: 0.8rem;
+  font-weight: 400;
+}
+
+.volcano-pairs-list {
+  margin: 0;
+  padding: 0;
+  font-size: 0.85rem;
+  font-variant-numeric: tabular-nums;
+  list-style: none;
+}
+
+.volcano-pairs-list li {
+  display: flex;
+  justify-content: space-between;
+  padding: 2px 0;
+}
+
+.volcano-caption {
+  margin: 12px 0 0;
+  color: var(--muted);
+  font-size: 0.8rem;
+}

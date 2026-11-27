@@ -13,6 +13,7 @@ import { DriftPanel } from './panels/drift-panel';
 import { FourPricePanel } from './panels/four-price-panel';
 import { RebalancerPanel } from './panels/rebalancer-panel';
 import { TreemapPanel } from './panels/treemap-panel';
+import { VolcanoPanel } from './panels/volcano-panel';
 
 // EQUITY is the default portfolio (spec §1).
 const DEFAULT_PORTFOLIO_ID = 'p-equity';
@@ -70,11 +71,7 @@ export function App(): ReactNode {
           horizon={horizon}
         />
         <FourPricePanel portfolioId={portfolioId} />
-        <PlaceholderPanel
-          title="VOLcano"
-          section="§3.4"
-          query="portfolioRisk"
-        />
+        <VolcanoPanel portfolioId={portfolioId} />
         <DriftPanel portfolioId={portfolioId} />
         <RebalancerPanel key={portfolioId} portfolioId={portfolioId} />
         <DeploymentPanel portfolioId={portfolioId} />
